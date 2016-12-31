@@ -146,13 +146,6 @@ public class MyHandlerForMaoni extends MaoniEmailListener implements Handler {
 
     @Override
     public void onCreate(@NonNull View rootView, @Nullable final Bundle savedInstanceState) {
-        mEmailInputLayout = (TextInputLayout) rootView.findViewById(R.id.extra_email_inputlayout);
-        mEmail = (EditText) rootView.findViewById(R.id.extra_email);
-
-        mExtraEditText = (EditText) rootView.findViewById(R.id.extra_edittext);
-        mExtraRadioGroup = (RadioGroup) rootView.findViewById(R.id.extra_radiogroup);
-
-        //You may pre-fill some fields accordingly, before they are displayed to the user
-        mEmail.setText("a@b.cd", TextView.BufferType.EDITABLE);
+        // Disabled in this library
     }
 }

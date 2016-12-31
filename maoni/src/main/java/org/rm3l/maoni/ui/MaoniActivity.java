@@ -52,8 +52,6 @@ import android.widget.TextView;
 import org.rm3l.maoni.Maoni.CallbacksConfiguration;
 import org.rm3l.maoni.R;
 import org.rm3l.maoni.common.contract.Listener;
-import org.rm3l.maoni.common.contract.UiListener;
-import org.rm3l.maoni.common.contract.Validator;
 import org.rm3l.maoni.common.model.Feedback;
 import org.rm3l.maoni.utils.LogcatUtils;
 import org.rm3l.maoni.utils.ViewUtils;
@@ -81,25 +79,17 @@ public class MaoniActivity extends AppCompatActivity {
     public static final String WORKING_DIR = "WORKING_DIR";
     public static final String FILE_PROVIDER_AUTHORITY = "FILE_PROVIDER_AUTHORITY";
     public static final String THEME = "THEME";
-    public static final String TOOLBAR_TITLE_TEXT_COLOR = "TOOLBAR_TITLE_TEXT_COLOR";
-    public static final String TOOLBAR_SUBTITLE_TEXT_COLOR = "TOOLBAR_SUBTITLE_TEXT_COLOR";
     public static final String SCREENSHOT_FILE = "SCREENSHOT_FILE";
     public static final String CALLER_ACTIVITY = "CALLER_ACTIVITY";
     public static final String WINDOW_TITLE = "WINDOW_TITLE";
-    public static final String WINDOW_SUBTITLE = "WINDOW_SUBTITLE";
-    public static final String MESSAGE = "MESSAGE";
-    public static final String HEADER = "HEADER";
     public static final String SCREENSHOT_HINT = "SCREENSHOT_HINT";
     public static final String CONTENT_HINT = "CONTENT_HINT";
     public static final String CONTENT_ERROR_TEXT = "CONTENT_ERROR_TEXT";
     public static final String SCREENSHOT_TOUCH_TO_PREVIEW_HINT = "SCREENSHOT_PREVIEW_HINT";
-    public static final String INCLUDE_LOGS_TEXT = "INCLUDE_LOGS_TEXT";
-    public static final String INCLUDE_SCREENSHOT_TEXT = "INCLUDE_SCREENSHOT_TEXT";
+    public static final String INCLUDE_SYSTEM_INFO_TEXT = "INCLUDE_SYSTEM_INFO_TEXT";
     public static final String EXTRA_LAYOUT = "EXTRA_LAYOUT";
 
     private static final String MAONI_LOGS_FILENAME = "maoni_logs.txt";
-
-    protected View mRootView;
 
     @Nullable
     private TextInputLayout mContentInputLayout;
@@ -108,10 +98,7 @@ public class MaoniActivity extends AppCompatActivity {
     private EditText mContent;
 
     @Nullable
-    private CheckBox mIncludeLogs;
-
-    @Nullable
-    private CheckBox mIncludeScreenshot;
+    private CheckBox mIncludeSystemInfo;
 
     @Nullable
     private CharSequence mScreenshotFilePath;
@@ -126,7 +113,6 @@ public class MaoniActivity extends AppCompatActivity {
     private String mFeedbackUniqueId;
     private Feedback.App mAppInfo;
 
-    private Validator mValidator;
     private Listener mListener;
 
     private int mHighlightColor;
@@ -141,13 +127,7 @@ public class MaoniActivity extends AppCompatActivity {
 
         setTheme(intent.getIntExtra(THEME, R.style.Maoni_AppTheme_Light));
 
-        setContentView(R.layout.maoni_activity_feedback);
-
-        mRootView = findViewById(R.id.maoni_container);
-        if (mRootView == null) {
-            throw new IllegalStateException(
-                    "Layout must contain a root view with the following id: maoni_container");
-        }
+        setContentView(R.layout.maoni_form_content);
 
         mHighlightColor = ContextCompat.getColor(this, R.color.maoni_highlight_transparent_semi);
         mBlackoutColor = ContextCompat.getColor(this, R.color.maoni_black);
@@ -156,14 +136,6 @@ public class MaoniActivity extends AppCompatActivity {
             mWorkingDir = new File(intent.getStringExtra(WORKING_DIR));
         } else {
             mWorkingDir =  getCacheDir();
-        }
-
-        final ImageView headerImageView = (ImageView) findViewById(R.id.maoni_toolbar_header_image);
-        if (headerImageView != null && intent.hasExtra(HEADER)) {
-            final int headerLayoutId = intent.getIntExtra(HEADER, -1);
-            if (headerLayoutId != -1) {
-                headerImageView.setImageResource(headerLayoutId);
-            }
         }
 
         if (intent.hasExtra(EXTRA_LAYOUT)) {
@@ -182,40 +154,15 @@ public class MaoniActivity extends AppCompatActivity {
         final CallbacksConfiguration maoniConfiguration = CallbacksConfiguration.getInstance();
 
         mListener = maoniConfiguration.getListener();
-        mValidator = maoniConfiguration.getValidator();
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.maoni_toolbar);
-        if (toolbar != null) {
-            toolbar.setTitle(intent.hasExtra(WINDOW_TITLE) ?
-                    intent.getCharSequenceExtra(WINDOW_TITLE) :
-                    getString(R.string.maoni_send_feedback));
-            if (intent.hasExtra(WINDOW_SUBTITLE)) {
-                toolbar.setSubtitle(intent.getCharSequenceExtra(WINDOW_SUBTITLE));
-            }
-            if (intent.hasExtra(TOOLBAR_TITLE_TEXT_COLOR)) {
-                toolbar.setTitleTextColor(
-                        intent.getIntExtra(TOOLBAR_TITLE_TEXT_COLOR, R.color.maoni_white));
-            }
-            if (intent.hasExtra(TOOLBAR_SUBTITLE_TEXT_COLOR)) {
-                toolbar.setSubtitleTextColor(
-                        intent.getIntExtra(TOOLBAR_SUBTITLE_TEXT_COLOR, R.color.maoni_white));
-            }
-            setSupportActionBar(toolbar);
+        if (intent.hasExtra(WINDOW_TITLE)) {
+            setTitle(intent.getCharSequenceExtra(WINDOW_TITLE));
         }
 
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-        }
-
-        if (intent.hasExtra(MESSAGE)) {
-            final CharSequence message = intent.getCharSequenceExtra(MESSAGE);
-            final TextView activityMessageTv = (TextView) findViewById(R.id.maoni_feedback_message);
-            if (activityMessageTv != null) {
-                activityMessageTv.setText(message);
-            }
         }
 
         if (intent.hasExtra(SCREENSHOT_HINT)) {
@@ -223,7 +170,11 @@ public class MaoniActivity extends AppCompatActivity {
             final TextView screenshotInformationalHintTv =
                     (TextView) findViewById(R.id.maoni_screenshot_informational_text);
             if (screenshotInformationalHintTv != null) {
-                screenshotInformationalHintTv.setText(screenshotInformationalHint);
+                if (screenshotInformationalHint == null) {
+                    screenshotInformationalHintTv.setVisibility(View.GONE);
+                } else {
+                    screenshotInformationalHintTv.setText(screenshotInformationalHint);
+                }
             }
         }
 
@@ -243,14 +194,9 @@ public class MaoniActivity extends AppCompatActivity {
             mContentErrorText = getString(R.string.maoni_validate_must_not_be_blank);
         }
 
-        mIncludeLogs = (CheckBox) findViewById(R.id.maoni_include_logs);
-        if (mIncludeLogs != null && intent.hasExtra(INCLUDE_LOGS_TEXT)) {
-            mIncludeLogs.setText(intent.getCharSequenceExtra(INCLUDE_LOGS_TEXT));
-        }
-
-        mIncludeScreenshot = (CheckBox) findViewById(R.id.maoni_include_screenshot);
-        if (mIncludeScreenshot != null && intent.hasExtra(INCLUDE_SCREENSHOT_TEXT)) {
-            mIncludeScreenshot.setText(intent.getCharSequenceExtra(INCLUDE_SCREENSHOT_TEXT));
+        mIncludeSystemInfo = (CheckBox) findViewById(R.id.maoni_include_logs);
+        if (mIncludeSystemInfo != null && intent.hasExtra(INCLUDE_SYSTEM_INFO_TEXT)) {
+            mIncludeSystemInfo.setText(intent.getCharSequenceExtra(INCLUDE_SYSTEM_INFO_TEXT));
         }
 
         mScreenshotFilePath = intent.getCharSequenceExtra(SCREENSHOT_FILE);
@@ -258,43 +204,7 @@ public class MaoniActivity extends AppCompatActivity {
 
         mFeedbackUniqueId = UUID.randomUUID().toString();
 
-        final View fab = findViewById(R.id.maoni_fab);
-        if (fab != null) {
-            final ViewTreeObserver viewTreeObserver = fab.getViewTreeObserver();
-            if (viewTreeObserver == null) {
-                if (this.mMenu != null) {
-                    final MenuItem item = this.mMenu.findItem(R.id.maoni_feedback_send);
-                    if (item != null) {
-                        item.setVisible(false);
-                    }
-                }
-            } else {
-                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (mMenu != null) {
-                            final MenuItem item = mMenu.findItem(R.id.maoni_feedback_send);
-                            if (item != null) {
-                                item.setVisible(fab.getVisibility() != View.VISIBLE);
-                            }
-                        }
-                    }
-                });
-            }
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    validateAndSubmitForm();
-                }
-            });
-        }
-
         setAppRelatedInfo();
-
-        final UiListener uiListener = maoniConfiguration.getUiListener();
-        if (uiListener != null) {
-            uiListener.onCreate(mRootView, savedInstanceState);
-        }
     }
 
     private void initScreenCaptureView(@NonNull final Intent intent) {
@@ -312,8 +222,8 @@ public class MaoniActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(mScreenshotFilePath)) {
             final File file = new File(mScreenshotFilePath.toString());
             if (file.exists()) {
-                if (mIncludeScreenshot != null) {
-                    mIncludeScreenshot.setVisibility(View.VISIBLE);
+                if (mIncludeSystemInfo != null) {
+                    mIncludeSystemInfo.setVisibility(View.VISIBLE);
                 }
                 if (screenshotContentView != null) {
                     screenshotContentView.setVisibility(View.VISIBLE);
@@ -417,16 +327,16 @@ public class MaoniActivity extends AppCompatActivity {
                     });
                 }
             } else {
-                if (mIncludeScreenshot != null) {
-                    mIncludeScreenshot.setVisibility(View.GONE);
+                if (mIncludeSystemInfo != null) {
+                    mIncludeSystemInfo.setVisibility(View.GONE);
                 }
                 if (screenshotContentView != null) {
                     screenshotContentView.setVisibility(View.GONE);
                 }
             }
         } else {
-            if (mIncludeScreenshot != null) {
-                mIncludeScreenshot.setVisibility(View.GONE);
+            if (mIncludeSystemInfo != null) {
+                mIncludeSystemInfo.setVisibility(View.GONE);
             }
             if (screenshotContentView != null) {
                 screenshotContentView.setVisibility(View.GONE);
@@ -463,7 +373,7 @@ public class MaoniActivity extends AppCompatActivity {
                         intent.getStringExtra(APPLICATION_INFO_VERSION_NAME) : null);
     }
 
-    private boolean validateForm(@NonNull View rootView) {
+    private boolean validateForm() {
         if (mContent != null) {
             if (TextUtils.isEmpty(mContent.getText())) {
                 if (mContentInputLayout != null) {
@@ -477,8 +387,7 @@ public class MaoniActivity extends AppCompatActivity {
                 }
             }
         }
-        //Call the validator implementation instead
-        return mValidator == null || mValidator.validateForm(rootView);
+        return true;
     }
 
     @Override
@@ -502,12 +411,8 @@ public class MaoniActivity extends AppCompatActivity {
 
     private void validateAndSubmitForm() {
         //Validate form
-        if (this.validateForm(mRootView)) {
+        if (this.validateForm()) {
             //TODO Check that device is actually connected to the internet prior to going any further
-            boolean includeScreenshot = false;
-            if (mIncludeScreenshot != null) {
-                includeScreenshot = mIncludeScreenshot.isChecked();
-            }
             String contentText = "";
             if (mContent != null) {
                 contentText = mContent.getText().toString();
@@ -520,8 +425,8 @@ public class MaoniActivity extends AppCompatActivity {
             Uri logsUri = null;
             File logsFile = null;
 
-            final boolean includeLogs = mIncludeLogs != null && mIncludeLogs.isChecked();
-            if (includeLogs) {
+            final boolean includeSystemInfo = mIncludeSystemInfo != null && mIncludeSystemInfo.isChecked();
+            if (includeSystemInfo) {
                 logsFile = new File(
                         mWorkingDir,
                         MAONI_LOGS_FILENAME);
@@ -551,10 +456,10 @@ public class MaoniActivity extends AppCompatActivity {
                             this,
                             mAppInfo,
                             contentText,
-                            includeScreenshot,
+                            includeSystemInfo,
                             screenshotUri,
                             screenshotFile,
-                            includeLogs,
+                            includeSystemInfo,
                             logsUri,
                             logsFile);
             if (mListener != null) {

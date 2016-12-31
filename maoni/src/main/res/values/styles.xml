@@ -26,8 +26,8 @@ SOFTWARE.
         <item name="colorPrimary">@color/maoni_colorPrimary</item>
         <item name="colorPrimaryDark">@color/maoni_colorPrimaryDark</item>
         <item name="colorAccent">@color/maoni_colorAccent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
     </style>
 
     <style name="Maoni_AppTheme_Light" parent="Maoni_AppTheme_Base">

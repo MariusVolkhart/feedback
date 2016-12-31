@@ -58,12 +58,9 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
         final MyHandlerForMaoni handlerForMaoni = new MyHandlerForMaoni(this);
         final Maoni.Builder maoniBuilder = new Maoni.Builder(MY_FILE_PROVIDER_AUTHORITY)
                 .withWindowTitle("Feedback") //Set to an empty string to clear it
-                .withMessage("Hey! Love or hate this app? We would love to hear from you.\n\n" +
-                        "Note: Almost everything in Maoni is customizable.")
                 .withExtraLayout(R.layout.my_feedback_activity_extra_content)
                 .withFeedbackContentHint("[Custom hint] Write your feedback here")
-                .withIncludeLogsText("[Custom text] Include system logs")
-                .withIncludeScreenshotText("[Custom text] Include screenshot")
+                .withIncludeSystemInfoText("[Custom text] Include system logs")
                 .withTouchToPreviewScreenshotText("Touch To Preview")
                 .withContentErrorMessage("Custom error message")
                 .withScreenshotHint("Custom test: Lorem Ipsum Dolor Sit Amet...");
@@ -77,7 +74,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
                     // so we need to re-register it again by reconstructing a new Maoni instance.
                     //Also, Maoni.start(...) cannot be called twice,
                     // but we are reusing the Builder to construct a new instance along with its handler.
-                    mMaoni = maoniBuilder.withHandler(handlerForMaoni).build();
+                    mMaoni = maoniBuilder.withListener(handlerForMaoni).build();
                     mMaoni.start(MaoniSampleMainActivity.this);
                 }
             });
@@ -87,7 +84,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         //Clear strong references used in Maoni, by de-registering any handlers, listeners and validators
-        mMaoni.clear();
+        mMaoni.unregisterListener();
         super.onDestroy();
     }
 

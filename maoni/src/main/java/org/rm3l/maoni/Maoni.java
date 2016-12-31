@@ -33,10 +33,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.util.Log;
 
-import org.rm3l.maoni.common.contract.Handler;
 import org.rm3l.maoni.common.contract.Listener;
-import org.rm3l.maoni.common.contract.UiListener;
-import org.rm3l.maoni.common.contract.Validator;
 import org.rm3l.maoni.ui.MaoniActivity;
 import org.rm3l.maoni.utils.ContextUtils;
 import org.rm3l.maoni.utils.ViewUtils;
@@ -56,17 +53,11 @@ import static org.rm3l.maoni.ui.MaoniActivity.CONTENT_ERROR_TEXT;
 import static org.rm3l.maoni.ui.MaoniActivity.CONTENT_HINT;
 import static org.rm3l.maoni.ui.MaoniActivity.EXTRA_LAYOUT;
 import static org.rm3l.maoni.ui.MaoniActivity.FILE_PROVIDER_AUTHORITY;
-import static org.rm3l.maoni.ui.MaoniActivity.HEADER;
-import static org.rm3l.maoni.ui.MaoniActivity.INCLUDE_LOGS_TEXT;
-import static org.rm3l.maoni.ui.MaoniActivity.INCLUDE_SCREENSHOT_TEXT;
-import static org.rm3l.maoni.ui.MaoniActivity.MESSAGE;
+import static org.rm3l.maoni.ui.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
 import static org.rm3l.maoni.ui.MaoniActivity.SCREENSHOT_FILE;
 import static org.rm3l.maoni.ui.MaoniActivity.SCREENSHOT_HINT;
 import static org.rm3l.maoni.ui.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
 import static org.rm3l.maoni.ui.MaoniActivity.THEME;
-import static org.rm3l.maoni.ui.MaoniActivity.TOOLBAR_SUBTITLE_TEXT_COLOR;
-import static org.rm3l.maoni.ui.MaoniActivity.TOOLBAR_TITLE_TEXT_COLOR;
-import static org.rm3l.maoni.ui.MaoniActivity.WINDOW_SUBTITLE;
 import static org.rm3l.maoni.ui.MaoniActivity.WINDOW_TITLE;
 import static org.rm3l.maoni.ui.MaoniActivity.WORKING_DIR;
 
@@ -89,28 +80,6 @@ public class Maoni {
     @Nullable
     public final CharSequence windowTitle;
     /**
-     * The feedback window sub-title
-     */
-    @Nullable
-    public final CharSequence windowSubTitle;
-    /**
-     * The feedback window title color
-     */
-    @ColorRes
-    @Nullable
-    public final Integer windowTitleTextColor;
-    /**
-     * The feedback window sub-title color
-     */
-    @ColorRes
-    @Nullable
-    public final Integer windowSubTitleTextColor;
-    /**
-     * The message to display to the user
-     */
-    @Nullable
-    public final CharSequence message;
-    /**
      * The feedback form field error message to display to the user
      */
     @Nullable
@@ -127,21 +96,10 @@ public class Maoni {
     @Nullable
     public final CharSequence screenshotHint;
     /**
-     * Header image
-     */
-    @DrawableRes
-    @Nullable
-    public final Integer header;
-    /**
-     * Text do display next to the "Include logs" checkbox
+     * Text do display next to the "Include screenshot and logs" checkbox
      */
     @Nullable
-    public final CharSequence includeLogsText;
-    /**
-     * Text do display next to the "Include screenshot" checkbox
-     */
-    @Nullable
-    public final CharSequence includeScreenshotText;
+    public final CharSequence includeSystemInfoText;
     /**
      * The "Touch to preview" text (displayed below the screenshot thumbnail).
      * Keep it short and to the point
@@ -171,19 +129,11 @@ public class Maoni {
      *                                       Will default to the caller activity cache directory if none was specified.
      *                                       This is where screenshots are typically stored.
      * @param windowTitle                  the feedback window title
-     * @param windowSubTitle                the feedback window sub-title
-     * @param windowTitleTextColor          the feedback window title text color
-     *                                      (use {@literal null} for the default)
-     * @param windowSubTitleTextColor       the feedback window sub-title text color
-     *                                      (use {@literal null} for the default)
      * @param theme                        the theme to apply
-     * @param header                       the header image
-     * @param message                      the feedback form field error message to display to the user
      * @param feedbackContentHint          the feedback form field hint message
      * @param contentErrorMessage          the feedback form field error message to display to the user
      * @param extraLayout                  the extra layout resource.
-     * @param includeLogsText              the text do display next to the "Include logs" checkbox
-     * @param includeScreenshotText        the text do display next to the "Include screenshot" checkbox
+     * @param includeSystemInfoText        the text do display next to the "Include screenshot and logs" checkbox
      * @param touchToPreviewScreenshotText the "Touch to preview" text
      * @param screenshotHint               the text to display to the user
      */
@@ -191,33 +141,21 @@ public class Maoni {
             @Nullable String fileProviderAuthority,
             @Nullable final File maoniWorkingDir,
             @Nullable final CharSequence windowTitle,
-            @Nullable final CharSequence windowSubTitle,
-            @ColorRes @Nullable final Integer windowTitleTextColor,
-            @ColorRes @Nullable final Integer windowSubTitleTextColor,
             @StyleRes @Nullable final Integer theme,
-            @DrawableRes @Nullable final Integer header,
-            @Nullable final CharSequence message,
             @Nullable final CharSequence feedbackContentHint,
             @Nullable final CharSequence contentErrorMessage,
             @LayoutRes @Nullable final Integer extraLayout,
-            @Nullable final CharSequence includeLogsText,
-            @Nullable final CharSequence includeScreenshotText,
+            @Nullable final CharSequence includeSystemInfoText,
             @Nullable final CharSequence touchToPreviewScreenshotText,
             @Nullable final CharSequence screenshotHint) {
 
         this.fileProviderAuthority = fileProviderAuthority;
-        this.windowSubTitle = windowSubTitle;
-        this.windowTitleTextColor = windowTitleTextColor;
-        this.windowSubTitleTextColor = windowSubTitleTextColor;
         this.theme = theme;
         this.windowTitle = windowTitle;
-        this.message = message;
         this.contentErrorMessage = contentErrorMessage;
         this.feedbackContentHint = feedbackContentHint;
         this.screenshotHint = screenshotHint;
-        this.header = header;
-        this.includeLogsText = includeLogsText;
-        this.includeScreenshotText = includeScreenshotText;
+        this.includeSystemInfoText = includeSystemInfoText;
         this.touchToPreviewScreenshotText = touchToPreviewScreenshotText;
         this.extraLayout = extraLayout;
         this.maoniWorkingDir = maoniWorkingDir;
@@ -231,7 +169,7 @@ public class Maoni {
     public void start(@Nullable final Activity callerActivity) {
 
         if (mUsed.getAndSet(true)) {
-            this.clear();
+            unregisterListener();
             throw new UnsupportedOperationException(
                     "Maoni instance cannot be reused to start a new activity. " +
                             "Please build a new Maoni instance.");
@@ -303,26 +241,6 @@ public class Maoni {
             maoniIntent.putExtra(WINDOW_TITLE, windowTitle);
         }
 
-        if (windowSubTitle != null) {
-            maoniIntent.putExtra(WINDOW_SUBTITLE, windowSubTitle);
-        }
-
-        if (windowTitleTextColor != null) {
-            maoniIntent.putExtra(TOOLBAR_TITLE_TEXT_COLOR, windowTitleTextColor);
-        }
-
-        if (windowSubTitleTextColor != null) {
-            maoniIntent.putExtra(TOOLBAR_SUBTITLE_TEXT_COLOR, windowSubTitleTextColor);
-        }
-
-        if (message != null) {
-            maoniIntent.putExtra(MESSAGE, message);
-        }
-
-        if (header != null) {
-            maoniIntent.putExtra(HEADER, header);
-        }
-
         if (extraLayout != null) {
             maoniIntent.putExtra(EXTRA_LAYOUT, extraLayout);
         }
@@ -339,12 +257,8 @@ public class Maoni {
             maoniIntent.putExtra(SCREENSHOT_HINT, screenshotHint);
         }
 
-        if (includeScreenshotText != null) {
-            maoniIntent.putExtra(INCLUDE_SCREENSHOT_TEXT, includeScreenshotText);
-        }
-
-        if (includeLogsText != null) {
-            maoniIntent.putExtra(INCLUDE_LOGS_TEXT, includeLogsText);
+        if (includeSystemInfoText != null) {
+            maoniIntent.putExtra(INCLUDE_SYSTEM_INFO_TEXT, includeSystemInfoText);
         }
 
         if (touchToPreviewScreenshotText != null) {
@@ -358,26 +272,6 @@ public class Maoni {
     public Maoni unregisterListener() {
         getInstance().setListener(null);
         return this;
-    }
-
-    public Maoni unregisterUiListener() {
-        getInstance().setUiListener(null);
-        return this;
-    }
-
-    public Maoni unregisterValidator() {
-        getInstance().setValidator(null);
-        return this;
-    }
-
-    public Maoni unregisterHandler() {
-        return this.unregisterListener()
-                .unregisterUiListener()
-                .unregisterValidator();
-    }
-
-    public Maoni clear() {
-        return this.unregisterHandler();
     }
 
     /**
@@ -403,8 +297,6 @@ public class Maoni {
         @Nullable
         private Integer windowSubTitleTextColor;
         @Nullable
-        private CharSequence message;
-        @Nullable
         private CharSequence contentErrorMessage;
         @Nullable
         private CharSequence feedbackContentHint;
@@ -416,7 +308,7 @@ public class Maoni {
         @Nullable
         private CharSequence includeScreenshotText;
         @Nullable
-        private CharSequence includeLogsText;
+        private CharSequence includeSystemInfoText;
         @Nullable
         private CharSequence touchToPreviewScreenshotText;
         @LayoutRes
@@ -514,22 +406,12 @@ public class Maoni {
         }
 
         @Nullable
-        public CharSequence getIncludeLogText() {
-            return includeLogsText;
+        public CharSequence getIncludeSystemInfoText() {
+            return includeSystemInfoText;
         }
 
-        public Builder withIncludeLogsText(@Nullable CharSequence includeLogsText) {
-            this.includeLogsText = includeLogsText;
-            return this;
-        }
-
-        @Nullable
-        public CharSequence getIncludeScreenshotText() {
-            return includeScreenshotText;
-        }
-
-        public Builder withIncludeScreenshotText(@Nullable CharSequence includeScreenshotText) {
-            this.includeScreenshotText = includeScreenshotText;
+        public Builder withIncludeSystemInfoText(@Nullable CharSequence includeSystemInfoText) {
+            this.includeSystemInfoText = includeSystemInfoText;
             return this;
         }
 
@@ -540,16 +422,6 @@ public class Maoni {
 
         public Builder withTouchToPreviewScreenshotText(@Nullable CharSequence touchToPreviewScreenshotText) {
             this.touchToPreviewScreenshotText = touchToPreviewScreenshotText;
-            return this;
-        }
-
-        @Nullable
-        public CharSequence getMessage() {
-            return message;
-        }
-
-        public Builder withMessage(@Nullable CharSequence message) {
-            this.message = message;
             return this;
         }
 
@@ -579,13 +451,11 @@ public class Maoni {
             return screenshotHint;
         }
 
+        /**
+         * @param screenshotHint if {@code null}, the screenshot hint view will be hidden
+         */
         public Builder withScreenshotHint(@Nullable CharSequence screenshotHint) {
             this.screenshotHint = screenshotHint;
-            return this;
-        }
-
-        public Builder withValidator(@Nullable final Validator validator) {
-            getInstance().setValidator(validator);
             return this;
         }
 
@@ -594,34 +464,16 @@ public class Maoni {
             return this;
         }
 
-        public Builder withUiListener(@Nullable final UiListener uiListener) {
-            getInstance().setUiListener(uiListener);
-            return this;
-        }
-
-        public Builder withHandler(@Nullable final Handler handler) {
-            return this
-                    .withListener(handler)
-                    .withValidator(handler)
-                    .withUiListener(handler);
-        }
-
         public Maoni build() {
             return new Maoni(
                     fileProviderAuthority,
                     maoniWorkingDir,
                     windowTitle,
-                    windowSubTitle,
-                    windowTitleTextColor,
-                    windowSubTitleTextColor,
                     theme,
-                    header,
-                    message,
                     feedbackContentHint,
                     contentErrorMessage,
                     extraLayout,
-                    includeLogsText,
-                    includeScreenshotText,
+                    includeSystemInfoText,
                     touchToPreviewScreenshotText,
                     screenshotHint);
         }
@@ -636,13 +488,7 @@ public class Maoni {
         private static CallbacksConfiguration SINGLETON = null;
 
         @Nullable
-        private Validator validator;
-
-        @Nullable
         private Listener listener;
-
-        @Nullable
-        private UiListener uiListener;
 
         private CallbacksConfiguration() {
         }
@@ -656,17 +502,6 @@ public class Maoni {
         }
 
         @Nullable
-        public Validator getValidator() {
-            return validator;
-        }
-
-        @NonNull
-        public CallbacksConfiguration setValidator(@Nullable final Validator validator) {
-            this.validator = validator;
-            return this;
-        }
-
-        @Nullable
         public Listener getListener() {
             return listener;
         }
@@ -677,21 +512,8 @@ public class Maoni {
             return this;
         }
 
-        @Nullable
-        public UiListener getUiListener() {
-            return uiListener;
-        }
-
-        @NonNull
-        public CallbacksConfiguration setUiListener(@Nullable final UiListener uiListener) {
-            this.uiListener = uiListener;
-            return this;
-        }
-
         public CallbacksConfiguration reset() {
-            return this.setUiListener(null)
-                    .setListener(null)
-                    .setValidator(null);
+            return setListener(null);
         }
     }
 
