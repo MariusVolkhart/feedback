@@ -106,14 +106,13 @@ SOFTWARE.
 
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/maoni_screenshot_preview_image_view_updated"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <me.panavtec.drawableview.DrawableView
             android:id="@+id/maoni_screenshot_preview_image_drawable_view"
-            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
@@ -121,9 +120,8 @@ SOFTWARE.
             android:id="@+id/maoni_screenshot_preview_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
             android:contentDescription="@string/maoni_screenshot_preview" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>
