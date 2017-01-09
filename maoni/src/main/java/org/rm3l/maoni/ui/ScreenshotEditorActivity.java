@@ -4,19 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatActivity;
+
+import org.rm3l.maoni.R;
 
 public final class ScreenshotEditorActivity extends AppCompatActivity implements ScreenshotEditorFragment.Listener {
 
-    public static Intent newIntent(Context context, Uri screenshotUri) {
+    public static Intent newIntent(Context context, Uri screenshotUri, @StyleRes int theme) {
         Intent intent = new Intent(context, ScreenshotEditorActivity.class);
         intent.putExtra(ScreenshotEditorFragment.ARG_SCREENSHOT_URI, screenshotUri);
+        intent.putExtra(MaoniActivity.THEME, theme);
         return intent;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(getIntent().getIntExtra(MaoniActivity.THEME, R.style.Maoni_Theme));
         if (savedInstanceState == null) {
             Uri screenshotUri = getIntent().getParcelableExtra(ScreenshotEditorFragment.ARG_SCREENSHOT_URI);
             getSupportFragmentManager().beginTransaction()

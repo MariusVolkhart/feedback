@@ -27,7 +27,7 @@ SOFTWARE.
     <item
         android:id="@+id/maoni_feedback_send"
         android:alphabeticShortcut="s"
-        android:icon="@drawable/ic_send_white_24dp"
+        android:icon="@drawable/ic_send_black_24dp"
         android:orderInCategory="1"
         android:title="@string/feedback_title"
         app:showAsAction="always"/>

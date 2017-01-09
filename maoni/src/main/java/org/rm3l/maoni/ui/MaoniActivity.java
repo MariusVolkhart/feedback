@@ -30,6 +30,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -108,7 +109,7 @@ public class MaoniActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
 
-        setTheme(intent.getIntExtra(THEME, R.style.Maoni_AppTheme_Light));
+        setTheme(intent.getIntExtra(THEME, R.style.Maoni_Theme));
 
         setContentView(R.layout.maoni_form_content);
 
@@ -139,10 +140,12 @@ public class MaoniActivity extends AppCompatActivity {
             setTitle(intent.getCharSequenceExtra(WINDOW_TITLE));
         }
 
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         }
 
         if (intent.hasExtra(SCREENSHOT_HINT)) {
@@ -227,7 +230,8 @@ public class MaoniActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             Uri screenshotUri = Uri.fromFile(file);
-                            startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri));
+                            int theme = intent.getIntExtra(THEME, R.style.Maoni_Theme);
+                            startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri, theme));
 //                            getSupportFragmentManager()
 //                                    .beginTransaction()
 //                                    .add(android.R.id.content, ScreenshotEditorFragment.newInstance(Uri.fromFile(file)), ScreenshotEditorFragment.TAG)

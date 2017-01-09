@@ -71,7 +71,7 @@ SOFTWARE.
                 android:layout_height="match_parent"
                 android:background="?actionBarItemBackground"
                 android:contentDescription="@string/maoni_undo"
-                android:src="@drawable/ic_undo_white_24dp" />
+                android:src="@drawable/ic_undo_black_24dp" />
 
         </LinearLayout>
     </android.support.v7.widget.Toolbar>

@@ -22,10 +22,10 @@ SOFTWARE.
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.rm3l.maoni">
 
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application>
-        <activity android:name=".ui.MaoniActivity"/>
+        <activity android:name=".ui.MaoniActivity" />
         <activity android:name=".ui.ScreenshotEditorActivity" />
     </application>
 
