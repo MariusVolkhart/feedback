@@ -72,7 +72,7 @@ public final class ScreenshotEditorFragment extends Fragment {
         final DrawableViewConfig config = new DrawableViewConfig();
         config.setStrokeWidth(57.0f);
         config.setMinZoom(1.0f);
-        config.setMaxZoom(3.0f);
+        config.setMaxZoom(1.0f);
         config.setStrokeColor(highlightColor);
         imageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
