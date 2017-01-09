@@ -43,9 +43,11 @@ SOFTWARE.
     <color name="maoni_transparent_full">#00000000</color>
     <color name="maoni_opaque_full">#FF000000</color>
     <color name="maoni_transparent_semi">#80000000</color>
+    <color name="color_selection_indicator">@color/maoni_white</color>
 
 
-    <color name="maoni_highlight_transparent_semi">#7F76FF03</color>
+    <color name="maoni_highlight_transparent_semi">#99FDD734</color>
+    <color name="highlight_solid">#FDD734</color>
 
     <!-- AboutLibraries DEFAULT colors -->
     <color name="maoni_window_background">#ECECEC</color>

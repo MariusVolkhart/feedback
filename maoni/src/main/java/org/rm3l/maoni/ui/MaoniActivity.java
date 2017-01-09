@@ -21,31 +21,22 @@
  */
 package org.rm3l.maoni.ui;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,9 +49,6 @@ import org.rm3l.maoni.utils.ViewUtils;
 
 import java.io.File;
 import java.util.UUID;
-
-import me.panavtec.drawableview.DrawableView;
-import me.panavtec.drawableview.DrawableViewConfig;
 
 /**
  * Maoni Activity
@@ -108,15 +96,10 @@ public class MaoniActivity extends AppCompatActivity {
 
     private File mWorkingDir;
 
-    private Menu mMenu;
-
     private String mFeedbackUniqueId;
     private Feedback.App mAppInfo;
 
     private Listener mListener;
-
-    private int mHighlightColor;
-    private int mBlackoutColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +111,6 @@ public class MaoniActivity extends AppCompatActivity {
         setTheme(intent.getIntExtra(THEME, R.style.Maoni_AppTheme_Light));
 
         setContentView(R.layout.maoni_form_content);
-
-        mHighlightColor = ContextCompat.getColor(this, R.color.maoni_highlight_transparent_semi);
-        mBlackoutColor = ContextCompat.getColor(this, R.color.maoni_black);
 
         if (intent.hasExtra(WORKING_DIR)) {
             mWorkingDir = new File(intent.getStringExtra(WORKING_DIR));
@@ -240,89 +220,13 @@ public class MaoniActivity extends AppCompatActivity {
                     screenshotThumb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
-                            final Dialog imagePreviewDialog = new Dialog(MaoniActivity.this);
-
-                            imagePreviewDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            imagePreviewDialog.getWindow().setBackgroundDrawable(
-                                    new ColorDrawable(Color.TRANSPARENT));
-
-                            imagePreviewDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialogInterface) {
-                                    //nothing;
-                                }
-                            });
-
-                            imagePreviewDialog.setContentView(R.layout.maoni_screenshot_preview);
-
-                            final View.OnClickListener clickListener = new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    imagePreviewDialog.dismiss();
-                                }
-                            };
-
-                            final ImageView imageView = (ImageView)
-                                    imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_image);
-                            imageView.setImageURI(Uri.fromFile(file));
-
-                            final DrawableView drawableView = (DrawableView)
-                                    imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_image_drawable_view);
-                            final DrawableViewConfig config = new DrawableViewConfig();
-                            // If the view is bigger than canvas, with this the user will see the bounds
-                            config.setShowCanvasBounds(true);
-                            config.setStrokeWidth(57.0f);
-                            config.setMinZoom(1.0f);
-                            config.setMaxZoom(3.0f);
-                            config.setStrokeColor(mHighlightColor);
-                            final View decorView = getWindow().getDecorView();
-                            config.setCanvasWidth(decorView.getWidth());
-                            config.setCanvasHeight(decorView.getHeight());
-                            drawableView.setConfig(config);
-                            drawableView.bringToFront();
-
-                            imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_pick_highlight_color)
-                                    .setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            config.setStrokeColor(mHighlightColor);
-                                        }
-                                    });
-                            imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_pick_blackout_color)
-                                    .setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            config.setStrokeColor(mBlackoutColor);
-                                        }
-                                    });
-                            imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_close)
-                                    .setOnClickListener(clickListener);
-
-                            imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_undo)
-                                    .setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            drawableView.undo();
-                                        }
-                                    });
-
-                            imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_save)
-                                    .setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            ViewUtils.exportViewToFile(MaoniActivity.this,
-                                                    imagePreviewDialog.findViewById(R.id.maoni_screenshot_preview_image_view_updated),
-                                                    new File(mScreenshotFilePath.toString()));
-                                            initScreenCaptureView(intent);
-                                            imagePreviewDialog.dismiss();
-                                        }
-                                    });
-
-                            imagePreviewDialog.setCancelable(true);
-                            imagePreviewDialog.setCanceledOnTouchOutside(false);
-
-                            imagePreviewDialog.show();
+                            Uri screenshotUri = Uri.fromFile(file);
+                            startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri));
+//                            getSupportFragmentManager()
+//                                    .beginTransaction()
+//                                    .add(android.R.id.content, ScreenshotEditorFragment.newInstance(Uri.fromFile(file)), ScreenshotEditorFragment.TAG)
+//                                    .commit();
+//                            ScreenshotEditorFragment.newInstance(Uri.fromFile(file)).show(getSupportFragmentManager(), ScreenshotEditorFragment.TAG);
                         }
                     });
                 }
@@ -353,7 +257,6 @@ public class MaoniActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.maoni_activity_menu, menu);
-        this.mMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 

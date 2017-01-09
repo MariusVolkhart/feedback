@@ -26,6 +26,7 @@ SOFTWARE.
 
     <application>
         <activity android:name=".ui.MaoniActivity"/>
+        <activity android:name=".ui.ScreenshotEditorActivity" />
     </application>
 
 </manifest>

@@ -117,9 +117,8 @@ public class Maoni {
     @Nullable
     public final Integer theme;
     private final String fileProviderAuthority;
-    private File maoniWorkingDir;
-
     private final AtomicBoolean mUsed = new AtomicBoolean(false);
+    private File maoniWorkingDir;
 
     /**
      * Constructor
