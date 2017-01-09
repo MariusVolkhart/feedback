@@ -10,9 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import org.rm3l.maoni.R;
 import org.rm3l.maoni.utils.ViewUtils;
@@ -84,25 +83,17 @@ public final class ScreenshotEditorFragment extends Fragment {
             }
         });
 
-        final RadioButton highlightColorButton = (RadioButton) view.findViewById(R.id.maoni_screenshot_preview_pick_highlight_color);
-        final RadioButton blackoutColorButton = (RadioButton) view.findViewById(R.id.maoni_screenshot_preview_pick_blackout_color);
-        CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-
+        RadioGroup colorChooser = (RadioGroup) view.findViewById(R.id.color_chooser);
+        colorChooser.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (buttonView == highlightColorButton) {
-                        config.setStrokeColor(highlightColor);
-                        blackoutColorButton.setChecked(false);
-                    } else {
-                        config.setStrokeColor(blackoutColor);
-                        highlightColorButton.setChecked(false);
-                    }
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.maoni_screenshot_preview_pick_highlight_color) {
+                    config.setStrokeColor(highlightColor);
+                } else {
+                    config.setStrokeColor(blackoutColor);
                 }
             }
-        };
-        highlightColorButton.setOnCheckedChangeListener(checkedChangeListener);
-        blackoutColorButton.setOnCheckedChangeListener(checkedChangeListener);
+        });
         view.findViewById(R.id.maoni_screenshot_preview_undo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

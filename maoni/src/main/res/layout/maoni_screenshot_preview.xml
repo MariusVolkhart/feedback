@@ -40,6 +40,7 @@ SOFTWARE.
             android:orientation="horizontal">
 
             <RadioGroup
+                android:id="@+id/color_chooser"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checkedButton="@+id/maoni_screenshot_preview_pick_highlight_color"
