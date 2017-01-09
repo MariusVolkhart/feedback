@@ -41,13 +41,14 @@ public final class ScreenshotEditorFragment extends Fragment {
         final int blackoutColor = ContextCompat.getColor(getActivity(), R.color.maoni_black);
         final Uri fileUri = getArguments().getParcelable(ARG_SCREENSHOT_URI);
         final View view = inflater.inflate(R.layout.maoni_screenshot_preview, container, false);
+        final Listener presenter = (Listener) getActivity();
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // FIXME
+                presenter.onDoneWithScreenshotEditing();
             }
         });
         toolbar.inflateMenu(R.menu.menu_screenshot_editor);
@@ -56,9 +57,7 @@ public final class ScreenshotEditorFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_save) {
                     ViewUtils.exportViewToFile(getActivity(), view.findViewById(R.id.maoni_screenshot_preview_image_view_updated), new File(fileUri.getPath()));
-                    // FIXME
-//                    initScreenCaptureView(intent);
-//                    dismiss();
+                    presenter.onDoneWithScreenshotEditing();
                     return true;
                 } else {
                     return false;
@@ -111,5 +110,9 @@ public final class ScreenshotEditorFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public interface Listener {
+        void onDoneWithScreenshotEditing();
     }
 }

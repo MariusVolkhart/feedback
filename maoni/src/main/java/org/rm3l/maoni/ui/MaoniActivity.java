@@ -187,6 +187,12 @@ public class MaoniActivity extends AppCompatActivity {
         setAppRelatedInfo();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initScreenCaptureView(getIntent());
+    }
+
     private void initScreenCaptureView(@NonNull final Intent intent) {
         final ImageButton screenshotThumb = (ImageButton)
                 findViewById(R.id.maoni_screenshot);
