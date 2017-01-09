@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import org.rm3l.maoni.R;
 import org.rm3l.maoni.utils.ViewUtils;
@@ -83,8 +84,8 @@ public final class ScreenshotEditorFragment extends Fragment {
             }
         });
 
-        final CompoundButton highlightColorButton = (CompoundButton) view.findViewById(R.id.maoni_screenshot_preview_pick_highlight_color);
-        final CompoundButton blackoutColorButton = (CompoundButton) view.findViewById(R.id.maoni_screenshot_preview_pick_blackout_color);
+        final RadioButton highlightColorButton = (RadioButton) view.findViewById(R.id.maoni_screenshot_preview_pick_highlight_color);
+        final RadioButton blackoutColorButton = (RadioButton) view.findViewById(R.id.maoni_screenshot_preview_pick_blackout_color);
         CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
 
             @Override

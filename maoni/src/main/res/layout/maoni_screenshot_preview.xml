@@ -39,26 +39,30 @@ SOFTWARE.
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <ToggleButton
-                android:id="@+id/maoni_screenshot_preview_pick_highlight_color"
-                android:layout_width="40dp"
+            <RadioGroup
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:background="@drawable/highlight_selector"
-                android:checked="true"
-                android:contentDescription="@string/maoni_highlight"
-                android:textOff=""
-                android:textOn="" />
+                android:checkedButton="@+id/maoni_screenshot_preview_pick_highlight_color"
+                android:orientation="horizontal">
 
-            <ToggleButton
-                android:id="@+id/maoni_screenshot_preview_pick_blackout_color"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:background="@drawable/blackout_selector"
-                android:contentDescription="@string/maoni_blackout"
-                android:textOff=""
-                android:textOn="" />
+                <RadioButton
+                    android:id="@+id/maoni_screenshot_preview_pick_highlight_color"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/highlight_selector"
+                    android:button="@null"
+                    android:contentDescription="@string/maoni_highlight" />
+
+                <RadioButton
+                    android:id="@+id/maoni_screenshot_preview_pick_blackout_color"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/blackout_selector"
+                    android:button="@null"
+                    android:contentDescription="@string/maoni_blackout" />
+            </RadioGroup>
 
             <ImageButton
                 android:id="@+id/maoni_screenshot_preview_undo"

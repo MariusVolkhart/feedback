@@ -6,7 +6,7 @@
             <stroke android:width="@dimen/color_selection_indicator_width" android:color="@color/color_selection_indicator" />
         </shape>
     </item>
-    <item>
+    <item android:state_checked="false">
         <shape android:shape="oval">
             <solid android:color="@color/highlight_solid" />
         </shape>
