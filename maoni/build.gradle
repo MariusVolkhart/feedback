@@ -21,8 +21,6 @@
  */
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 25
@@ -31,8 +29,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 231
-        versionName "2.3.1"
+        versionCode 1
+        versionName "1"
     }
     buildTypes {
         release {
@@ -42,81 +40,11 @@ android {
     }
 }
 
-group = 'org.rm3l'
-version = '2.3.1'
-
-final homePath = System.properties['user.home']
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(":maoni-common")
-    testCompile 'junit:junit:4.12'
+    compile 'org.rm3l:maoni-common:2.3.1'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'me.panavtec:drawableview:0.6.0'
 }
 
-task generateSourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier 'sources'
-}
-
-task generateJavadocs(type: Javadoc) {
-    failOnError false
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath()
-            .join(File.pathSeparator))
-}
-
-task generateJavadocsJar(type: Jar) {
-    from generateJavadocs.destinationDir
-    classifier 'javadoc'
-}
-
-generateJavadocsJar.dependsOn generateJavadocs
-
-artifacts {
-    archives generateJavadocsJar
-    archives generateSourcesJar
-}
-
-bintray {
-
-    //Attempt to read keystore.properties file, if any first
-    final propsFile = new File(homePath.toString() + "/.droid/", "maoni.bintray.properties")
-
-    if (propsFile.exists()) {
-        final props = new Properties()
-        props.load(new FileInputStream(propsFile))
-        user = props['user']
-        key = props['key']
-    } else {
-        user = ""
-        key = ""
-    }
-
-    publish = true //If version should be auto published after an upload
-    
-    pkg {
-        repo = 'maven'
-        name = 'org.rm3l:maoni'
-        labels = ['maoni', 'android', 'feedback', 'android-lib', 'comments', 'review', 'bug', 'issue']
-
-        //noinspection GroovyAssignabilityCheck
-        version {
-            name = '2.3.1'
-            desc = 'Maoni Android Library'
-            released  = new Date()
-            vcsTag = '2.3.1'
-        }
-
-        publicDownloadNumbers = true
-
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/rm3l/maoni.git'
-        websiteUrl = 'https://rm3l.github.io/maoni'
-        issueTrackerUrl = 'https://github.com/rm3l/maoni/issues'
-
-    }
-    configurations = ['archives']
-}
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -20,4 +20,4 @@
  * SOFTWARE.
  */
 
-include ':maoni-sample', ':maoni', ':maoni-common'
+include ':maoni-sample', ':maoni'
