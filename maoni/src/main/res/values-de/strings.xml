@@ -3,13 +3,13 @@
   <string name="maoni_screenshot">Screenshot</string>
   <string name="maoni_feedback_content_hint">Hier Feedback hinterlassen</string>
   <string name="maoni_feedback_include_system_info_title">Screenshot und Protokolle hinzufügen</string>
-  <string name="maoni_touch_to_preview">Touch to preview and edit</string>
-  <string name="maoni_screenshot_informational_text">The screenshot allows us to have more contextual information about your feedback.</string>
+  <string name="maoni_touch_to_preview">Inhalt markieren und verbergen</string>
   <string name="maoni_send_feedback">Senden</string>
-  <string name="maoni_validate_must_not_be_blank">Must not be blank</string>
-  <string name="maoni_screenshot_preview">Preview</string>
+  <string name="maoni_validate_must_not_be_blank">Darf nicht leer sein</string>
   <string name="maoni_highlight">Markieren</string>
   <string name="maoni_blackout">Schwärzen</string>
-  <string name="maoni_undo">Undo</string>
+  <string name="maoni_undo">Zurück</string>
   <string name="maoni_save">Speichern</string>
+  <string name="maoni_screenshot_informational_text">Ihre Systeminformationen werden gesendet.</string>
+  <string name="maoni_screenshot_preview">Vorschau</string>
 </resources>
