@@ -43,7 +43,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
     private static final String MY_FILE_PROVIDER_AUTHORITY =
             (BuildConfig.APPLICATION_ID + ".fileprovider");
 
-    private Feedback mMaoni;
+    private Feedback feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
         }
 
         final MyHandlerForMaoni handlerForMaoni = new MyHandlerForMaoni(this);
-        final Feedback.Builder maoniBuilder = new Feedback.Builder(MY_FILE_PROVIDER_AUTHORITY)
+        final Feedback.Builder builder = new Feedback.Builder(MY_FILE_PROVIDER_AUTHORITY, handlerForMaoni)
                 .withWindowTitle("Feedback") //Set to an empty string to clear it
                 .withExtraLayout(R.layout.my_feedback_activity_extra_content)
                 .withFeedbackContentHint("[Custom hint] Write your feedback here")
@@ -74,8 +74,8 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
                     // so we need to re-register it again by reconstructing a new Maoni instance.
                     //Also, Maoni.start(...) cannot be called twice,
                     // but we are reusing the Builder to construct a new instance along with its handler.
-                    mMaoni = maoniBuilder.withListener(handlerForMaoni).build();
-                    mMaoni.start(MaoniSampleMainActivity.this);
+                    feedback = builder.build();
+                    feedback.start(MaoniSampleMainActivity.this);
                 }
             });
         }
@@ -84,7 +84,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         //Clear strong references used in Maoni, by de-registering any handlers, listeners and validators
-        mMaoni.unregisterListener();
+        feedback.unregisterListener();
         super.onDestroy();
     }
 
