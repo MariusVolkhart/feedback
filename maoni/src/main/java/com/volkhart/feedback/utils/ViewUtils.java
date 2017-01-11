@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.rm3l.maoni.utils;
+package com.volkhart.feedback.utils;
 
 import android.content.Context;
 import android.content.res.Resources;

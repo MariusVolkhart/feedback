@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.rm3l.maoni.ui;
+package com.volkhart.feedback.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -41,12 +41,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.rm3l.maoni.Maoni.CallbacksConfiguration;
+import com.volkhart.feedback.Feedback.CallbacksConfiguration;
+import com.volkhart.feedback.utils.LogcatUtils;
+import com.volkhart.feedback.utils.ViewUtils;
+
 import org.rm3l.maoni.R;
 import org.rm3l.maoni.common.contract.Listener;
 import org.rm3l.maoni.common.model.Feedback;
-import org.rm3l.maoni.utils.LogcatUtils;
-import org.rm3l.maoni.utils.ViewUtils;
 
 import java.io.File;
 import java.util.UUID;
@@ -109,7 +110,7 @@ public class MaoniActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
 
-        setTheme(intent.getIntExtra(THEME, R.style.Maoni_Theme));
+        setTheme(intent.getIntExtra(THEME, R.style.Feedback_Theme));
 
         setContentView(R.layout.maoni_form_content);
 
@@ -230,13 +231,8 @@ public class MaoniActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             Uri screenshotUri = Uri.fromFile(file);
-                            int theme = intent.getIntExtra(THEME, R.style.Maoni_Theme);
+                            int theme = intent.getIntExtra(THEME, R.style.Feedback_Theme);
                             startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri, theme));
-//                            getSupportFragmentManager()
-//                                    .beginTransaction()
-//                                    .add(android.R.id.content, ScreenshotEditorFragment.newInstance(Uri.fromFile(file)), ScreenshotEditorFragment.TAG)
-//                                    .commit();
-//                            ScreenshotEditorFragment.newInstance(Uri.fromFile(file)).show(getSupportFragmentManager(), ScreenshotEditorFragment.TAG);
                         }
                     });
                 }

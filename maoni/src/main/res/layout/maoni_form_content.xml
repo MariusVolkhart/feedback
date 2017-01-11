@@ -37,16 +37,16 @@ SOFTWARE.
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/maoni_activity_vertical_margin"
-        android:layout_marginRight="@dimen/maoni_activity_vertical_margin"
-        android:layout_marginTop="@dimen/maoni_activity_vertical_margin"
+        android:layout_marginLeft="@dimen/feedback_activity_vertical_margin"
+        android:layout_marginRight="@dimen/feedback_activity_vertical_margin"
+        android:layout_marginTop="@dimen/feedback_activity_vertical_margin"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/maoni_content_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/maoni_activity_vertical_margin"
+            android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
             android:hint="@string/maoni_feedback_content_hint">
 
             <android.support.design.widget.TextInputEditText
@@ -61,7 +61,7 @@ SOFTWARE.
             android:id="@+id/maoni_content_extra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/maoni_activity_vertical_margin"
+            android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
             android:orientation="vertical"
             android:visibility="gone" />
 
@@ -69,7 +69,7 @@ SOFTWARE.
             android:id="@+id/maoni_include_logs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/maoni_activity_vertical_margin"
+            android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
             android:checked="true"
             android:text="@string/maoni_feedback_include_system_info_title" />
 
@@ -77,7 +77,7 @@ SOFTWARE.
             android:id="@+id/maoni_include_screenshot_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/maoni_activity_vertical_margin"
+            android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
             android:layout_marginEnd="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"

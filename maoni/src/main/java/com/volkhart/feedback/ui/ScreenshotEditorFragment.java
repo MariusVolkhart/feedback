@@ -1,4 +1,4 @@
-package org.rm3l.maoni.ui;
+package com.volkhart.feedback.ui;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.volkhart.feedback.utils.ViewUtils;
+
 import org.rm3l.maoni.R;
-import org.rm3l.maoni.utils.ViewUtils;
 
 import java.io.File;
 
@@ -37,8 +38,8 @@ public final class ScreenshotEditorFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final int highlightColor = ContextCompat.getColor(getActivity(), R.color.maoni_highlight_transparent_semi);
-        final int blackoutColor = ContextCompat.getColor(getActivity(), R.color.maoni_black);
+        final int highlightColor = ContextCompat.getColor(getActivity(), R.color.highlight_transparent_semi);
+        final int blackoutColor = ContextCompat.getColor(getActivity(), R.color.black);
         final Uri fileUri = getArguments().getParcelable(ARG_SCREENSHOT_URI);
         final View view = inflater.inflate(R.layout.maoni_screenshot_preview, container, false);
         final Listener presenter = (Listener) getActivity();

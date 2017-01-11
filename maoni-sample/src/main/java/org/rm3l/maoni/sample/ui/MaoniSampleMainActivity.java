@@ -32,8 +32,8 @@ import android.view.View;
 
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
+import com.volkhart.feedback.Feedback;
 
-import org.rm3l.maoni.Maoni;
 import org.rm3l.maoni.sample.BuildConfig;
 import org.rm3l.maoni.sample.R;
 import org.rm3l.maoni.sample.feedback.MyHandlerForMaoni;
@@ -43,7 +43,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
     private static final String MY_FILE_PROVIDER_AUTHORITY =
             (BuildConfig.APPLICATION_ID + ".fileprovider");
 
-    private Maoni mMaoni;
+    private Feedback mMaoni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
         }
 
         final MyHandlerForMaoni handlerForMaoni = new MyHandlerForMaoni(this);
-        final Maoni.Builder maoniBuilder = new Maoni.Builder(MY_FILE_PROVIDER_AUTHORITY)
+        final Feedback.Builder maoniBuilder = new Feedback.Builder(MY_FILE_PROVIDER_AUTHORITY)
                 .withWindowTitle("Feedback") //Set to an empty string to clear it
                 .withExtraLayout(R.layout.my_feedback_activity_extra_content)
                 .withFeedbackContentHint("[Custom hint] Write your feedback here")

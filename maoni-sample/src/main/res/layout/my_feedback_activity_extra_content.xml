@@ -28,7 +28,7 @@ SOFTWARE.
         android:id="@+id/extra_email_inputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/maoni_activity_vertical_margin">
+        android:layout_marginBottom="@dimen/feedback_activity_vertical_margin">
         <EditText
             android:id="@+id/extra_email"
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@ SOFTWARE.
         android:id="@+id/extra_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/maoni_activity_vertical_margin"
+        android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
         android:hint="EditText hint. Write something here."
         android:inputType="textCapSentences|textMultiLine"
         android:isScrollContainer="true"

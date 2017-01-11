@@ -20,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <resources>
-    <color name="maoni_white">#FFFFFF</color>
-    <color name="maoni_black">#000000</color>
-    <color name="maoni_windowBackgroundDark">#37474F</color>
-    <color name="color_selection_indicator">@color/maoni_white</color>
-    <color name="maoni_highlight_transparent_semi">#99FDD734</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="windowBackgroundDark">#37474F</color>
+    <color name="color_selection_indicator">@color/white</color>
+    <color name="highlight_transparent_semi">#99FDD734</color>
     <color name="highlight_solid">#FDD734</color>
 
 </resources>

@@ -1,4 +1,4 @@
-package org.rm3l.maoni.ui;
+package com.volkhart.feedback.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,7 @@ public final class ScreenshotEditorActivity extends AppCompatActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(getIntent().getIntExtra(MaoniActivity.THEME, R.style.Maoni_Theme));
+        setTheme(getIntent().getIntExtra(MaoniActivity.THEME, R.style.Feedback_Theme));
         if (savedInstanceState == null) {
             Uri screenshotUri = getIntent().getParcelableExtra(ScreenshotEditorFragment.ARG_SCREENSHOT_URI);
             getSupportFragmentManager().beginTransaction()

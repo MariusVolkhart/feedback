@@ -19,56 +19,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.rm3l.maoni;
+package com.volkhart.feedback;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.volkhart.feedback.ui.MaoniActivity;
+import com.volkhart.feedback.utils.ContextUtils;
+import com.volkhart.feedback.utils.ViewUtils;
+
 import org.rm3l.maoni.common.contract.Listener;
-import org.rm3l.maoni.ui.MaoniActivity;
-import org.rm3l.maoni.utils.ContextUtils;
-import org.rm3l.maoni.utils.ViewUtils;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.rm3l.maoni.Maoni.CallbacksConfiguration.getInstance;
-import static org.rm3l.maoni.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE;
-import static org.rm3l.maoni.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_DEBUG;
-import static org.rm3l.maoni.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_FLAVOR;
-import static org.rm3l.maoni.ui.MaoniActivity.APPLICATION_INFO_PACKAGE_NAME;
-import static org.rm3l.maoni.ui.MaoniActivity.APPLICATION_INFO_VERSION_CODE;
-import static org.rm3l.maoni.ui.MaoniActivity.APPLICATION_INFO_VERSION_NAME;
-import static org.rm3l.maoni.ui.MaoniActivity.CALLER_ACTIVITY;
-import static org.rm3l.maoni.ui.MaoniActivity.CONTENT_ERROR_TEXT;
-import static org.rm3l.maoni.ui.MaoniActivity.CONTENT_HINT;
-import static org.rm3l.maoni.ui.MaoniActivity.EXTRA_LAYOUT;
-import static org.rm3l.maoni.ui.MaoniActivity.FILE_PROVIDER_AUTHORITY;
-import static org.rm3l.maoni.ui.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
-import static org.rm3l.maoni.ui.MaoniActivity.SCREENSHOT_FILE;
-import static org.rm3l.maoni.ui.MaoniActivity.SCREENSHOT_HINT;
-import static org.rm3l.maoni.ui.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
-import static org.rm3l.maoni.ui.MaoniActivity.THEME;
-import static org.rm3l.maoni.ui.MaoniActivity.WINDOW_TITLE;
-import static org.rm3l.maoni.ui.MaoniActivity.WORKING_DIR;
+import static com.volkhart.feedback.Feedback.CallbacksConfiguration.getInstance;
+import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE;
+import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_DEBUG;
+import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_FLAVOR;
+import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_PACKAGE_NAME;
+import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_VERSION_CODE;
+import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_VERSION_NAME;
+import static com.volkhart.feedback.ui.MaoniActivity.CALLER_ACTIVITY;
+import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_ERROR_TEXT;
+import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_HINT;
+import static com.volkhart.feedback.ui.MaoniActivity.EXTRA_LAYOUT;
+import static com.volkhart.feedback.ui.MaoniActivity.FILE_PROVIDER_AUTHORITY;
+import static com.volkhart.feedback.ui.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
+import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_FILE;
+import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_HINT;
+import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
+import static com.volkhart.feedback.ui.MaoniActivity.THEME;
+import static com.volkhart.feedback.ui.MaoniActivity.WINDOW_TITLE;
+import static com.volkhart.feedback.ui.MaoniActivity.WORKING_DIR;
 
 /**
- * Maoni configuration
+ * Feedback configuration
  */
-public class Maoni {
+public class Feedback {
 
-    private static final String LOG_TAG = Maoni.class.getSimpleName();
+    private static final String LOG_TAG = Feedback.class.getSimpleName();
 
-    private static final String MAONI_FEEDBACK_SCREENSHOT_FILENAME = "maoni_feedback_screenshot.png";
+    private static final String SCREENSHOT_FILENAME = "feedback_screenshot.png";
 
     private static final String DEBUG = "DEBUG";
     private static final String FLAVOR = "FLAVOR";
@@ -118,13 +118,13 @@ public class Maoni {
     public final Integer theme;
     private final String fileProviderAuthority;
     private final AtomicBoolean mUsed = new AtomicBoolean(false);
-    private File maoniWorkingDir;
+    private File workingDir;
 
     /**
      * Constructor
      * @param fileProviderAuthority        the file provider authority.
      *                                     If {@literal null}, file sharing will not be available
-     * @param maoniWorkingDir                the working directory for Maoni.
+     * @param workingDir                   the working directory.
      *                                       Will default to the caller activity cache directory if none was specified.
      *                                       This is where screenshots are typically stored.
      * @param windowTitle                  the feedback window title
@@ -136,9 +136,9 @@ public class Maoni {
      * @param touchToPreviewScreenshotText the "Touch to preview" text
      * @param screenshotHint               the text to display to the user
      */
-    public Maoni(
+    public Feedback(
             @Nullable String fileProviderAuthority,
-            @Nullable final File maoniWorkingDir,
+            @Nullable final File workingDir,
             @Nullable final CharSequence windowTitle,
             @StyleRes @Nullable final Integer theme,
             @Nullable final CharSequence feedbackContentHint,
@@ -157,7 +157,7 @@ public class Maoni {
         this.includeSystemInfoText = includeSystemInfoText;
         this.touchToPreviewScreenshotText = touchToPreviewScreenshotText;
         this.extraLayout = extraLayout;
-        this.maoniWorkingDir = maoniWorkingDir;
+        this.workingDir = workingDir;
     }
 
     /**
@@ -219,13 +219,13 @@ public class Maoni {
         maoniIntent.putExtra(FILE_PROVIDER_AUTHORITY, fileProviderAuthority);
 
         maoniIntent.putExtra(WORKING_DIR,
-                maoniWorkingDir != null ?
-                        maoniWorkingDir : callerActivity.getCacheDir().getAbsolutePath());
+                workingDir != null ?
+                        workingDir : callerActivity.getCacheDir().getAbsolutePath());
 
         //Create screenshot file
         final File screenshotFile = new File(
-                maoniWorkingDir != null ? maoniWorkingDir : callerActivity.getCacheDir(),
-                MAONI_FEEDBACK_SCREENSHOT_FILENAME);
+                workingDir != null ? workingDir : callerActivity.getCacheDir(),
+                SCREENSHOT_FILENAME);
         ViewUtils.exportViewToFile(callerActivity,
                 callerActivity.getWindow().getDecorView(), screenshotFile);
         maoniIntent.putExtra(SCREENSHOT_FILE, screenshotFile.getAbsolutePath());
@@ -268,7 +268,7 @@ public class Maoni {
     }
 
 
-    public Maoni unregisterListener() {
+    public Feedback unregisterListener() {
         getInstance().setListener(null);
         return this;
     }
@@ -288,24 +288,11 @@ public class Maoni {
         @Nullable
         private CharSequence windowTitle;
         @Nullable
-        private CharSequence windowSubTitle;
-        @ColorRes
-        @Nullable
-        private Integer windowTitleTextColor;
-        @ColorRes
-        @Nullable
-        private Integer windowSubTitleTextColor;
-        @Nullable
         private CharSequence contentErrorMessage;
         @Nullable
         private CharSequence feedbackContentHint;
         @Nullable
         private CharSequence screenshotHint;
-        @DrawableRes
-        @Nullable
-        private Integer header;
-        @Nullable
-        private CharSequence includeScreenshotText;
         @Nullable
         private CharSequence includeSystemInfoText;
         @Nullable
@@ -317,16 +304,18 @@ public class Maoni {
         /**
          * Constructor
          *
-         * @param fileProviderAuthority the file provider authority.
-         *                              If {@literal null}, screenshot file sharing will not be available
+         * @param fileProviderAuthority the file provider authority. Required to be able to share screenshots
+         * @param listener Required to be able to process feedback
          */
-        public Builder(@Nullable final String fileProviderAuthority) {
+        public Builder(String fileProviderAuthority, Listener listener) {
+            if (TextUtils.isEmpty(fileProviderAuthority.trim())) {
+                throw new IllegalArgumentException("fileProviderAuthority may not be empty or blank");
+            }
             this.fileProviderAuthority = fileProviderAuthority;
-        }
-
-        @Nullable
-        public File getMaoniWorkingDir() {
-            return maoniWorkingDir;
+            if (listener == null) {
+                throw new NullPointerException("listener may not be null");
+            }
+            getInstance().setListener(listener);
         }
 
         public Builder withMaoniWorkingDir(@Nullable File maoniWorkingDir) {
@@ -334,19 +323,9 @@ public class Maoni {
             return this;
         }
 
-        @Nullable
-        public Integer getTheme() {
-            return theme;
-        }
-
         public Builder withTheme(@StyleRes @Nullable Integer theme) {
             this.theme = theme;
             return this;
-        }
-
-        @Nullable
-        public CharSequence getWindowTitle() {
-            return windowTitle;
         }
 
         public Builder withWindowTitle(@Nullable CharSequence windowTitle) {
@@ -354,69 +333,18 @@ public class Maoni {
             return this;
         }
 
-        @Nullable
-        public CharSequence getWindowSubTitle() {
-            return windowSubTitle;
-        }
-
-        public Builder withWindowSubTitle(@Nullable CharSequence windowSubTitle) {
-            this.windowSubTitle = windowSubTitle;
-            return this;
-        }
-
-        @Nullable
-        public Integer getWindowTitleTextColor() {
-            return windowTitleTextColor;
-        }
-
-        public Builder withWindowTitleTextColor(@ColorRes @Nullable Integer windowTitleTextColor) {
-            this.windowTitleTextColor = windowTitleTextColor;
-            return this;
-        }
-
-        @Nullable
-        public Integer getWindowSubTitleTextColor() {
-            return windowSubTitleTextColor;
-        }
-
-        public Builder withWindowSubTitleTextColor(@ColorRes @Nullable Integer windowSubTitleTextColor) {
-            this.windowSubTitleTextColor = windowSubTitleTextColor;
-            return this;
-        }
-
-        @Nullable
-        public Integer getExtraLayout() {
-            return extraLayout;
-        }
-
         public Builder withExtraLayout(@LayoutRes @Nullable Integer extraLayout) {
             this.extraLayout = extraLayout;
             return this;
-        }
-
-        @Nullable
-        public CharSequence getFeedbackContentHint() {
-            return feedbackContentHint;
         }
 
         public Builder withFeedbackContentHint(@Nullable CharSequence feedbackContentHint) {
             this.feedbackContentHint = feedbackContentHint;
             return this;
         }
-
-        @Nullable
-        public CharSequence getIncludeSystemInfoText() {
-            return includeSystemInfoText;
-        }
-
         public Builder withIncludeSystemInfoText(@Nullable CharSequence includeSystemInfoText) {
             this.includeSystemInfoText = includeSystemInfoText;
             return this;
-        }
-
-        @Nullable
-        public CharSequence getTouchToPreviewScreenshotText() {
-            return touchToPreviewScreenshotText;
         }
 
         public Builder withTouchToPreviewScreenshotText(@Nullable CharSequence touchToPreviewScreenshotText) {
@@ -424,30 +352,9 @@ public class Maoni {
             return this;
         }
 
-        @Nullable
-        public CharSequence getContentErrorMessage() {
-            return contentErrorMessage;
-        }
-
         public Builder withContentErrorMessage(@Nullable CharSequence contentErrorMessage) {
             this.contentErrorMessage = contentErrorMessage;
             return this;
-        }
-
-        @DrawableRes
-        @Nullable
-        public Integer getHeader() {
-            return header;
-        }
-
-        public Builder withHeader(@Nullable Integer header) {
-            this.header = header;
-            return this;
-        }
-
-        @Nullable
-        public CharSequence getScreenshotHint() {
-            return screenshotHint;
         }
 
         /**
@@ -458,13 +365,8 @@ public class Maoni {
             return this;
         }
 
-        public Builder withListener(@Nullable final Listener listener) {
-            getInstance().setListener(listener);
-            return this;
-        }
-
-        public Maoni build() {
-            return new Maoni(
+        public Feedback build() {
+            return new Feedback(
                     fileProviderAuthority,
                     maoniWorkingDir,
                     windowTitle,

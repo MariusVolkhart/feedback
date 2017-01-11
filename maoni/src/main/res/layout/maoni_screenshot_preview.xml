@@ -23,7 +23,7 @@ SOFTWARE.
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/maoni_windowBackgroundDark"
+    android:background="@color/windowBackgroundDark"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
