@@ -20,51 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <resources>
-
-    <color name="maoni_colorPrimary">#2196F3</color>
-    <color name="maoni_colorPrimaryDark">#1976D2</color>
-    <color name="maoni_colorAccent">#FF4081</color>
-    <!-- for backwards compatiblity make a color chain :D -->
-    <color name="maoni_theme_default_primary">@color/maoni_colorPrimary</color>
-    <color name="maoni_theme_default_primary_dark">@color/maoni_colorPrimaryDark</color>
-    <color name="maoni_theme_accent">@color/maoni_colorAccent</color>
-    <color name="maoni_primary">@color/maoni_theme_default_primary</color>
-    <color name="maoni_primary_dark">@color/maoni_theme_default_primary_dark</color>
-    <color name="maoni_accent">@color/maoni_theme_accent</color>
-    
-    <!-- Common -->
     <color name="maoni_white">#FFFFFF</color>
     <color name="maoni_black">#000000</color>
-
     <color name="maoni_windowBackgroundDark">#37474F</color>
-    <color name="maoni_windowBackgroundLight">@color/maoni_white</color>
-
-    <color name="maoni_normal_opaque_black">#000000</color>
-    <color name="maoni_transparent_full">#00000000</color>
-    <color name="maoni_opaque_full">#FF000000</color>
-    <color name="maoni_transparent_semi">#80000000</color>
     <color name="color_selection_indicator">@color/maoni_white</color>
-
-
     <color name="maoni_highlight_transparent_semi">#99FDD734</color>
     <color name="highlight_solid">#FDD734</color>
-
-    <!-- AboutLibraries DEFAULT colors -->
-    <color name="maoni_window_background">#ECECEC</color>
-    <color name="maoni_card">#FAFAFA</color>
-    <color name="maoni_title">#212121</color>
-    <color name="maoni_text">#727272</color>
-    <color name="maoni_special_button">#212121</color>
-    <color name="maoni_dividerDark">#AAA</color>
-    <color name="maoni_dividerLight">#DADADA</color>
-
-    <!-- AboutLibraries SAMPLE DARK colors -->
-    <color name="maoni_window_background_dark">#303030</color>
-    <color name="maoni_card_dark">#666666</color>
-    <color name="maoni_title_dark">#ffffffff</color>
-    <color name="maoni_text_dark">#DEDEDE</color>
-    <color name="maoni_special_button_dark">#ffffffff</color>
-    <color name="maoni_dividerDark_dark">#303030</color>
-    <color name="maoni_dividerLight_dark">#303030</color>
 
 </resources>

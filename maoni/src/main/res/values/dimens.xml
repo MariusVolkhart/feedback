@@ -21,12 +21,7 @@ SOFTWARE.
 -->
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="maoni_activity_horizontal_margin">16dp</dimen>
     <dimen name="maoni_activity_vertical_margin">16dp</dimen>
 
-    <dimen name="maoni_activity_app_bar_height">192dp</dimen>
-    <dimen name="maoni_activity_fab_margin">16dp</dimen>
-    <dimen name="maoni_activity_text_margin">16dp</dimen>
-    <dimen name="screenshot_border">2dp</dimen>
     <dimen name="color_selection_indicator_width">3dp</dimen>
 </resources>
