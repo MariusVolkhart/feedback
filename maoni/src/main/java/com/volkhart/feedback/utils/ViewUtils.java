@@ -21,7 +21,6 @@
  */
 package com.volkhart.feedback.utils;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -72,30 +71,30 @@ public final class ViewUtils {
 
     /**
      * Export the given view to the specified {@code File}
-     * @param context the context
-     * @param view the view to export
-     * @param file the file in which to save the view
+     *
+     * @param view    the view to export
+     * @param file    the file in which to save the view
      */
-    public static void exportViewToFile(@NonNull final Context context,
-                                        @NonNull final View view, @NonNull final File file) {
+    public static void exportViewToFile(@NonNull final View view, @NonNull final File file) {
         final Bitmap bitmap = toBitmap(view);
         if (bitmap == null) {
             return;
         }
-        exportBitmapToFile(context, bitmap, file);
+        exportBitmapToFile(bitmap, file);
     }
 
     /**
      * Export the given bitmap to the specified {@code File}
-     * @param context the context
-     * @param bitmap the bitmap to export
-     * @param file the file in which to save the view
+     *
+     * @param bitmap  the bitmap to export
+     * @param file    the file in which to save the view
      */
-    public static void exportBitmapToFile(@NonNull final Context context,
-                                          @NonNull final Bitmap bitmap,
+    public static void exportBitmapToFile(@NonNull final Bitmap bitmap,
                                           @NonNull final File file) {
         OutputStream outputStream = null;
         try {
+            // if making the directories fails we'll already handle it by not sending a screenshot
+            file.getParentFile().mkdirs();
             outputStream = new BufferedOutputStream(new FileOutputStream(file, false));
             bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY, outputStream);
             outputStream.flush();
@@ -139,9 +138,9 @@ public final class ViewUtils {
     /**
      * Decode a given drawable resource with the specified dimensions
      *
-     * @param res the app resources
-     * @param resId the drawable resource ID
-     * @param reqWidth the required width
+     * @param res       the app resources
+     * @param resId     the drawable resource ID
+     * @param reqWidth  the required width
      * @param reqHeight the required height
      * @return the bitmap
      */
@@ -164,8 +163,8 @@ public final class ViewUtils {
     /**
      * Decode a given image file with the specified dimensions
      *
-     * @param filePath the file resource path
-     * @param reqWidth the required width
+     * @param filePath  the file resource path
+     * @param reqWidth  the required width
      * @param reqHeight the required height
      * @return the bitmap
      */

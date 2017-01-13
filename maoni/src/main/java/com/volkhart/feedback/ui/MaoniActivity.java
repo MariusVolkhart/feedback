@@ -32,6 +32,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,10 +43,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.volkhart.feedback.Feedback.CallbacksConfiguration;
+import com.volkhart.feedback.R;
 import com.volkhart.feedback.utils.LogcatUtils;
 import com.volkhart.feedback.utils.ViewUtils;
 
-import org.rm3l.maoni.R;
 import org.rm3l.maoni.common.contract.Listener;
 import org.rm3l.maoni.common.model.Feedback;
 
@@ -66,10 +67,7 @@ public class MaoniActivity extends AppCompatActivity {
             "APPLICATION_INFO_BUILD_CONFIG_FLAVOR";
     public static final String APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE =
             "APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE";
-    public static final String WORKING_DIR = "WORKING_DIR";
-    public static final String FILE_PROVIDER_AUTHORITY = "FILE_PROVIDER_AUTHORITY";
     public static final String THEME = "THEME";
-    public static final String SCREENSHOT_FILE = "SCREENSHOT_FILE";
     public static final String CALLER_ACTIVITY = "CALLER_ACTIVITY";
     public static final String WINDOW_TITLE = "WINDOW_TITLE";
     public static final String SCREENSHOT_HINT = "SCREENSHOT_HINT";
@@ -78,8 +76,9 @@ public class MaoniActivity extends AppCompatActivity {
     public static final String SCREENSHOT_TOUCH_TO_PREVIEW_HINT = "SCREENSHOT_PREVIEW_HINT";
     public static final String INCLUDE_SYSTEM_INFO_TEXT = "INCLUDE_SYSTEM_INFO_TEXT";
     public static final String EXTRA_LAYOUT = "EXTRA_LAYOUT";
-
-    private static final String MAONI_LOGS_FILENAME = "maoni_logs.txt";
+    public static final String SCREENSHOT_PATH = "feedback/screenshot.png";
+    private static final String MAONI_LOGS_FILENAME = "feedback/logs.txt";
+    private static final String FILE_PROVIDER_AUTHORITY = "com.volkhart.feedback.fileprovider";
 
     @Nullable
     private TextInputLayout mContentInputLayout;
@@ -91,12 +90,7 @@ public class MaoniActivity extends AppCompatActivity {
     private CheckBox mIncludeSystemInfo;
 
     @Nullable
-    private CharSequence mScreenshotFilePath;
-
-    @Nullable
     private CharSequence mContentErrorText;
-
-    private File mWorkingDir;
 
     private String mFeedbackUniqueId;
     private Feedback.App mAppInfo;
@@ -113,12 +107,6 @@ public class MaoniActivity extends AppCompatActivity {
         setTheme(intent.getIntExtra(THEME, R.style.Feedback_Theme));
 
         setContentView(R.layout.maoni_form_content);
-
-        if (intent.hasExtra(WORKING_DIR)) {
-            mWorkingDir = new File(intent.getStringExtra(WORKING_DIR));
-        } else {
-            mWorkingDir =  getCacheDir();
-        }
 
         if (intent.hasExtra(EXTRA_LAYOUT)) {
             final View extraContentView = findViewById(R.id.maoni_content_extra);
@@ -183,7 +171,6 @@ public class MaoniActivity extends AppCompatActivity {
             mIncludeSystemInfo.setText(intent.getCharSequenceExtra(INCLUDE_SYSTEM_INFO_TEXT));
         }
 
-        mScreenshotFilePath = intent.getCharSequenceExtra(SCREENSHOT_FILE);
         initScreenCaptureView(intent);
 
         mFeedbackUniqueId = UUID.randomUUID().toString();
@@ -209,40 +196,32 @@ public class MaoniActivity extends AppCompatActivity {
         }
 
         final View screenshotContentView = findViewById(R.id.maoni_include_screenshot_content);
-        if (!TextUtils.isEmpty(mScreenshotFilePath)) {
-            final File file = new File(mScreenshotFilePath.toString());
-            if (file.exists()) {
-                if (mIncludeSystemInfo != null) {
-                    mIncludeSystemInfo.setVisibility(View.VISIBLE);
-                }
-                if (screenshotContentView != null) {
-                    screenshotContentView.setVisibility(View.VISIBLE);
-                }
-                if (screenshotThumb != null) {
-                    //Thumbnail - load with smaller resolution so as to reduce memory footprint
-                    screenshotThumb.setImageBitmap(
-                            ViewUtils.decodeSampledBitmapFromFilePath(
-                                    file.getAbsolutePath(), 100, 100));
-                }
+        final File file = new File(getFilesDir(), SCREENSHOT_PATH);
+        Log.d("TAAAAG2", file.getAbsolutePath());
+        if (file.exists()) {
+            if (mIncludeSystemInfo != null) {
+                mIncludeSystemInfo.setVisibility(View.VISIBLE);
+            }
+            if (screenshotContentView != null) {
+                screenshotContentView.setVisibility(View.VISIBLE);
+            }
+            if (screenshotThumb != null) {
+                //Thumbnail - load with smaller resolution so as to reduce memory footprint
+                screenshotThumb.setImageBitmap(
+                        ViewUtils.decodeSampledBitmapFromFilePath(
+                                file.getAbsolutePath(), 100, 100));
+            }
 
-                // Hook up clicks on the thumbnail views.
-                if (screenshotThumb != null) {
-                    screenshotThumb.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Uri screenshotUri = Uri.fromFile(file);
-                            int theme = intent.getIntExtra(THEME, R.style.Feedback_Theme);
-                            startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri, theme));
-                        }
-                    });
-                }
-            } else {
-                if (mIncludeSystemInfo != null) {
-                    mIncludeSystemInfo.setVisibility(View.GONE);
-                }
-                if (screenshotContentView != null) {
-                    screenshotContentView.setVisibility(View.GONE);
-                }
+            // Hook up clicks on the thumbnail views.
+            if (screenshotThumb != null) {
+                screenshotThumb.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri screenshotUri = Uri.fromFile(file);
+                        int theme = intent.getIntExtra(THEME, R.style.Feedback_Theme);
+                        startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri, theme));
+                    }
+                });
             }
         } else {
             if (mIncludeSystemInfo != null) {
@@ -336,27 +315,18 @@ public class MaoniActivity extends AppCompatActivity {
 
             final boolean includeSystemInfo = mIncludeSystemInfo != null && mIncludeSystemInfo.isChecked();
             if (includeSystemInfo) {
-                logsFile = new File(
-                        mWorkingDir,
-                        MAONI_LOGS_FILENAME);
+                logsFile = new File(getFilesDir(), MAONI_LOGS_FILENAME);
                 LogcatUtils.getLogsToFile(logsFile);
             }
 
-            if (intent.hasExtra(FILE_PROVIDER_AUTHORITY)) {
-                final String fileProviderAuthority = intent.getStringExtra(FILE_PROVIDER_AUTHORITY);
-                if (mScreenshotFilePath != null) {
-                    screenshotFile = new File(mScreenshotFilePath.toString());
-                    screenshotUri = FileProvider
-                            .getUriForFile(this, fileProviderAuthority, screenshotFile);
-                    grantUriPermission(intent.getComponent().getPackageName(),
-                            screenshotUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-                if (logsFile != null) {
-                    logsUri = FileProvider
-                            .getUriForFile(this, fileProviderAuthority, logsFile);
-                    grantUriPermission(intent.getComponent().getPackageName(),
-                            logsUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
+            screenshotFile = new File(getFilesDir(), SCREENSHOT_PATH);
+            screenshotUri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, screenshotFile);
+            grantUriPermission(intent.getComponent().getPackageName(),
+                    screenshotUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (logsFile != null) {
+                logsUri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, logsFile);
+                grantUriPermission(intent.getComponent().getPackageName(),
+                        logsUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
 
             //Construct the feedback object and call the actual implementation

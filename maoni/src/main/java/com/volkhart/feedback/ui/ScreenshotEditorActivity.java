@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatActivity;
 
-import org.rm3l.maoni.R;
+import com.volkhart.feedback.R;
 
 public final class ScreenshotEditorActivity extends AppCompatActivity implements ScreenshotEditorFragment.Listener {
 

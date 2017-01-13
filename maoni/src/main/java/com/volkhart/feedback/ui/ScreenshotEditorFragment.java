@@ -13,9 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.volkhart.feedback.R;
 import com.volkhart.feedback.utils.ViewUtils;
-
-import org.rm3l.maoni.R;
 
 import java.io.File;
 
@@ -57,7 +56,7 @@ public final class ScreenshotEditorFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_save) {
-                    ViewUtils.exportViewToFile(getActivity(), view.findViewById(R.id.maoni_screenshot_preview_image_view_updated), new File(fileUri.getPath()));
+                    ViewUtils.exportViewToFile(view.findViewById(R.id.maoni_screenshot_preview_image_view_updated), new File(fileUri.getPath()));
                     presenter.onDoneWithScreenshotEditing();
                     return true;
                 } else {

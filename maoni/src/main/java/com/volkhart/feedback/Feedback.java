@@ -29,7 +29,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.volkhart.feedback.ui.MaoniActivity;
@@ -52,14 +51,11 @@ import static com.volkhart.feedback.ui.MaoniActivity.CALLER_ACTIVITY;
 import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_ERROR_TEXT;
 import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_HINT;
 import static com.volkhart.feedback.ui.MaoniActivity.EXTRA_LAYOUT;
-import static com.volkhart.feedback.ui.MaoniActivity.FILE_PROVIDER_AUTHORITY;
 import static com.volkhart.feedback.ui.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
-import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_FILE;
 import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_HINT;
 import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
 import static com.volkhart.feedback.ui.MaoniActivity.THEME;
 import static com.volkhart.feedback.ui.MaoniActivity.WINDOW_TITLE;
-import static com.volkhart.feedback.ui.MaoniActivity.WORKING_DIR;
 
 /**
  * Feedback configuration
@@ -67,8 +63,6 @@ import static com.volkhart.feedback.ui.MaoniActivity.WORKING_DIR;
 public class Feedback {
 
     private static final String LOG_TAG = Feedback.class.getSimpleName();
-
-    private static final String SCREENSHOT_FILENAME = "feedback_screenshot.png";
 
     private static final String DEBUG = "DEBUG";
     private static final String FLAVOR = "FLAVOR";
@@ -116,17 +110,13 @@ public class Feedback {
     @StyleRes
     @Nullable
     public final Integer theme;
-    private final String fileProviderAuthority;
     private final AtomicBoolean mUsed = new AtomicBoolean(false);
     private File workingDir;
 
     /**
-     * Constructor
-     * @param fileProviderAuthority        the file provider authority.
-     *                                     If {@literal null}, file sharing will not be available
      * @param workingDir                   the working directory.
-     *                                       Will default to the caller activity cache directory if none was specified.
-     *                                       This is where screenshots are typically stored.
+     *                                     Will default to the caller activity cache directory if none was specified.
+     *                                     This is where screenshots are typically stored.
      * @param windowTitle                  the feedback window title
      * @param theme                        the theme to apply
      * @param feedbackContentHint          the feedback form field hint message
@@ -137,7 +127,6 @@ public class Feedback {
      * @param screenshotHint               the text to display to the user
      */
     public Feedback(
-            @Nullable String fileProviderAuthority,
             @Nullable final File workingDir,
             @Nullable final CharSequence windowTitle,
             @StyleRes @Nullable final Integer theme,
@@ -148,7 +137,6 @@ public class Feedback {
             @Nullable final CharSequence touchToPreviewScreenshotText,
             @Nullable final CharSequence screenshotHint) {
 
-        this.fileProviderAuthority = fileProviderAuthority;
         this.theme = theme;
         this.windowTitle = windowTitle;
         this.contentErrorMessage = contentErrorMessage;
@@ -216,19 +204,9 @@ public class Feedback {
                     buildConfigBuildTypeValue.toString());
         }
 
-        maoniIntent.putExtra(FILE_PROVIDER_AUTHORITY, fileProviderAuthority);
-
-        maoniIntent.putExtra(WORKING_DIR,
-                workingDir != null ?
-                        workingDir : callerActivity.getCacheDir().getAbsolutePath());
-
         //Create screenshot file
-        final File screenshotFile = new File(
-                workingDir != null ? workingDir : callerActivity.getCacheDir(),
-                SCREENSHOT_FILENAME);
-        ViewUtils.exportViewToFile(callerActivity,
-                callerActivity.getWindow().getDecorView(), screenshotFile);
-        maoniIntent.putExtra(SCREENSHOT_FILE, screenshotFile.getAbsolutePath());
+        final File screenshotFile = new File(callerActivity.getFilesDir(), MaoniActivity.SCREENSHOT_PATH);
+        ViewUtils.exportViewToFile(callerActivity.getWindow().getDecorView(), screenshotFile);
 
         maoniIntent.putExtra(CALLER_ACTIVITY, callerActivity.getClass().getCanonicalName());
 
@@ -277,9 +255,6 @@ public class Feedback {
      * Maoni Builder
      */
     public static class Builder {
-
-        @Nullable
-        private final String fileProviderAuthority;
         @StyleRes
         @Nullable
         public Integer theme;
@@ -302,16 +277,9 @@ public class Feedback {
         private Integer extraLayout;
 
         /**
-         * Constructor
-         *
-         * @param fileProviderAuthority the file provider authority. Required to be able to share screenshots
          * @param listener Required to be able to process feedback
          */
-        public Builder(String fileProviderAuthority, Listener listener) {
-            if (TextUtils.isEmpty(fileProviderAuthority.trim())) {
-                throw new IllegalArgumentException("fileProviderAuthority may not be empty or blank");
-            }
-            this.fileProviderAuthority = fileProviderAuthority;
+        public Builder(Listener listener) {
             if (listener == null) {
                 throw new NullPointerException("listener may not be null");
             }
@@ -342,6 +310,7 @@ public class Feedback {
             this.feedbackContentHint = feedbackContentHint;
             return this;
         }
+
         public Builder withIncludeSystemInfoText(@Nullable CharSequence includeSystemInfoText) {
             this.includeSystemInfoText = includeSystemInfoText;
             return this;
@@ -367,7 +336,6 @@ public class Feedback {
 
         public Feedback build() {
             return new Feedback(
-                    fileProviderAuthority,
                     maoniWorkingDir,
                     windowTitle,
                     theme,

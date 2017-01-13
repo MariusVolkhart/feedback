@@ -20,13 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.rm3l.maoni">
+    package="com.volkhart.feedback">
 
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application>
         <activity android:name="com.volkhart.feedback.ui.MaoniActivity" />
         <activity android:name="com.volkhart.feedback.ui.ScreenshotEditorActivity" />
+
+        <provider
+            android:name=".FeedbackFileProvider"
+            android:authorities="com.volkhart.feedback.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>
