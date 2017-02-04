@@ -48,7 +48,7 @@ public final class ScreenshotEditorFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.onDismiss();
+                presenter.onDoneWithScreenshotEditing();
             }
         });
         toolbar.inflateMenu(R.menu.menu_screenshot_editor);
@@ -57,7 +57,7 @@ public final class ScreenshotEditorFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_save) {
                     ViewUtils.exportViewToFile(view.findViewById(R.id.maoni_screenshot_preview_image_view_updated), new File(fileUri.getPath()));
-                    presenter.onSubmit();
+                    presenter.onDoneWithScreenshotEditing();
                     return true;
                 } else {
                     return false;
@@ -105,8 +105,6 @@ public final class ScreenshotEditorFragment extends Fragment {
     }
 
     public interface Listener {
-        void onSubmit();
-
-        void onDismiss();
+        void onDoneWithScreenshotEditing();
     }
 }

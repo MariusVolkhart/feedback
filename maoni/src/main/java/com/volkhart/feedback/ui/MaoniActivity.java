@@ -79,7 +79,6 @@ public class MaoniActivity extends AppCompatActivity {
     public static final String EXTRA_LAYOUT = "EXTRA_LAYOUT";
     public static final String SCREENSHOT_PATH = "feedback/screenshot.png";
     private static final String MAONI_LOGS_FILENAME = "feedback/logs.txt";
-    private static final int REQUEST_EDITOR = 1;
 
     @Nullable
     private TextInputLayout mContentInputLayout;
@@ -220,7 +219,7 @@ public class MaoniActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Uri screenshotUri = Uri.fromFile(file);
                         int theme = intent.getIntExtra(THEME, R.style.Feedback_Theme);
-                        startActivityForResult(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri, theme), REQUEST_EDITOR);
+                        startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri, theme));
                     }
                 });
             }
@@ -280,19 +279,6 @@ public class MaoniActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_EDITOR:
-                if (resultCode == RESULT_OK) {
-                    validateAndSubmitForm();
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
     public final boolean onOptionsItemSelected(@NonNull MenuItem item) {
         final int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
@@ -314,6 +300,7 @@ public class MaoniActivity extends AppCompatActivity {
     private void validateAndSubmitForm() {
         //Validate form
         if (this.validateForm()) {
+            //TODO Check that device is actually connected to the internet prior to going any further
             String contentText = "";
             if (mContent != null) {
                 contentText = mContent.getText().toString();
@@ -364,4 +351,5 @@ public class MaoniActivity extends AppCompatActivity {
             }
         } //else do nothing - this is up to the callback implementation
     }
+
 }
