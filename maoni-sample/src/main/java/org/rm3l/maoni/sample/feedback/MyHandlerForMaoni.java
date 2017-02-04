@@ -31,7 +31,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.rm3l.maoni.common.contract.Handler;
@@ -101,26 +100,26 @@ public class MyHandlerForMaoni extends MaoniEmailListener implements Handler {
 
         // Depending on your use case, you may add specific data in the feedback object returned,
         // and manipulate it accordingly
-        feedback.put("Email", mEmail.getText());
-        feedback.put("My Extra Edit Text", mExtraEditText.getText());
-
-        final String myExtraRadioGroupChecked;
-        switch (mExtraRadioGroup.getCheckedRadioButtonId()) {
-            case R.id.extra_rg1:
-                myExtraRadioGroupChecked = "RG 1";
-                break;
-            case R.id.extra_rg2:
-                myExtraRadioGroupChecked = "RG 2";
-                break;
-            case R.id.extra_rg3:
-                myExtraRadioGroupChecked = "RG 3";
-                break;
-            default:
-                myExtraRadioGroupChecked = null;
-                break;
-        }
-        feedback.put("My Extra Radio Group",
-                myExtraRadioGroupChecked != null ? myExtraRadioGroupChecked : "???");
+//        feedback.put("Email", mEmail.getText());
+//        feedback.put("My Extra Edit Text", mExtraEditText.getText());
+//
+//        final String myExtraRadioGroupChecked;
+//        switch (mExtraRadioGroup.getCheckedRadioButtonId()) {
+//            case R.id.extra_rg1:
+//                myExtraRadioGroupChecked = "RG 1";
+//                break;
+//            case R.id.extra_rg2:
+//                myExtraRadioGroupChecked = "RG 2";
+//                break;
+//            case R.id.extra_rg3:
+//                myExtraRadioGroupChecked = "RG 3";
+//                break;
+//            default:
+//                myExtraRadioGroupChecked = null;
+//                break;
+//        }
+//        feedback.put("My Extra Radio Group",
+//                myExtraRadioGroupChecked != null ? myExtraRadioGroupChecked : "???");
 
         //Forward to the Email Listener for opening up the "Send Email" Intent
         return super.onSendButtonClicked(feedback);

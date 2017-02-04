@@ -19,37 +19,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.volkhart.feedback.utils;
 
-apply plugin: 'com.android.library'
+import android.support.annotation.NonNull;
+import android.util.Log;
 
-android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1"
+/**
+ * Utilities for manipulating the App logs
+ */
+public final class LogUtils {
+
+    private static final String TAG = LogUtils.class.getCanonicalName();
+
+    private LogUtils() {
+        throw new UnsupportedOperationException("Not instantiable");
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    public static void writeLogsToFile(@NonNull final File outputFile) {
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, false)));
+            FeedbackTree.INSTANCE.writeToStream(out);
+        } catch (final IOException ioe) {
+            Log.e(TAG, "Unable to write logs to file", ioe);
+        } finally {
+            if (out != null) {
+                out.close();
+            }
         }
     }
-    lintOptions {
-        textReport true
-        textOutput 'stdout'
-    }
 }
-
-dependencies {
-    compile 'org.rm3l:maoni-common:2.3.1'
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-    compile 'me.panavtec:drawableview:0.6.0'
-    compile 'com.jakewharton.timber:timber:4.5.1'
-}
-
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

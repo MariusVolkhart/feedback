@@ -26,6 +26,9 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
+import com.volkhart.feedback.utils.FeedbackTree;
+
+import timber.log.Timber;
 
 public class MaoniSampleApplication extends Application {
 
@@ -33,9 +36,11 @@ public class MaoniSampleApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Timber.plant(FeedbackTree.INSTANCE);
         if (BuildConfig.DEBUG) {
             LeakCanary.install(this);
             Stetho.initializeWithDefaults(this);
+            Timber.plant(new Timber.DebugTree());
         }
     }
 }

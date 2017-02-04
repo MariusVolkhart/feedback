@@ -32,7 +32,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +43,7 @@ import android.widget.TextView;
 
 import com.volkhart.feedback.Feedback.CallbacksConfiguration;
 import com.volkhart.feedback.R;
-import com.volkhart.feedback.utils.LogcatUtils;
+import com.volkhart.feedback.utils.LogUtils;
 import com.volkhart.feedback.utils.ViewUtils;
 
 import org.rm3l.maoni.common.contract.Listener;
@@ -197,7 +196,6 @@ public class MaoniActivity extends AppCompatActivity {
 
         final View screenshotContentView = findViewById(R.id.maoni_include_screenshot_content);
         final File file = new File(getFilesDir(), SCREENSHOT_PATH);
-        Log.d("TAAAAG2", file.getAbsolutePath());
         if (file.exists()) {
             if (mIncludeSystemInfo != null) {
                 mIncludeSystemInfo.setVisibility(View.VISIBLE);
@@ -317,7 +315,7 @@ public class MaoniActivity extends AppCompatActivity {
             final boolean includeSystemInfo = mIncludeSystemInfo != null && mIncludeSystemInfo.isChecked();
             if (includeSystemInfo) {
                 logsFile = new File(getFilesDir(), MAONI_LOGS_FILENAME);
-                LogcatUtils.getLogsToFile(logsFile);
+                LogUtils.writeLogsToFile(logsFile);
             }
 
             screenshotFile = new File(getFilesDir(), SCREENSHOT_PATH);

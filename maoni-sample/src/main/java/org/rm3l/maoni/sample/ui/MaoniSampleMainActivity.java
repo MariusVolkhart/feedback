@@ -38,6 +38,8 @@ import org.rm3l.maoni.sample.BuildConfig;
 import org.rm3l.maoni.sample.R;
 import org.rm3l.maoni.sample.feedback.MyHandlerForMaoni;
 
+import timber.log.Timber;
+
 public class MaoniSampleMainActivity extends AppCompatActivity {
 
     private static final String MY_FILE_PROVIDER_AUTHORITY =
@@ -48,6 +50,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.i("onCreate");
         setContentView(R.layout.activity_maoni_sample_main);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -83,19 +86,24 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Timber.i("onDestroy");
         //Clear strong references used in Maoni, by de-registering any handlers, listeners and validators
-        feedback.unregisterListener();
+        if (feedback != null) {
+            feedback.unregisterListener();
+        }
         super.onDestroy();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Timber.i("onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.menu_maoni_sample, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Timber.i("onOptionsItemSelected: %d", item.getItemId());
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
