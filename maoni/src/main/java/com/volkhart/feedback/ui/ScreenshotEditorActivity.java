@@ -31,7 +31,13 @@ public final class ScreenshotEditorActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onDoneWithScreenshotEditing() {
+    public void onSubmit() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void onDismiss() {
         finish();
     }
 }
