@@ -46,8 +46,8 @@ android {
 
 dependencies {
     compile 'org.rm3l:maoni-common:2.3.1'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
     compile 'me.panavtec:drawableview:0.6.0'
 }
 
