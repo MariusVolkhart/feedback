@@ -24,6 +24,9 @@ public final class FeedbackTree extends Timber.DebugTree {
                 writer.println(message);
             }
         }
+
+        // We add a line at the end to make sure the file gets create no matter what
+        writer.println();
     }
 
     @Override
