@@ -27,16 +27,6 @@ SOFTWARE.
     <application>
         <activity android:name="com.volkhart.feedback.ui.MaoniActivity" />
         <activity android:name="com.volkhart.feedback.ui.ScreenshotEditorActivity" />
-
-        <provider
-            android:name=".FeedbackFileProvider"
-            android:authorities="com.volkhart.feedback.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </provider>
     </application>
 
 </manifest>

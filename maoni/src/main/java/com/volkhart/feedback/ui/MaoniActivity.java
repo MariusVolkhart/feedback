@@ -67,6 +67,7 @@ public class MaoniActivity extends AppCompatActivity {
             "APPLICATION_INFO_BUILD_CONFIG_FLAVOR";
     public static final String APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE =
             "APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE";
+    public static final String FILE_PROVIDER_AUTHORITY = "FILE_PROVIDER_AUTHORITY";
     public static final String THEME = "THEME";
     public static final String CALLER_ACTIVITY = "CALLER_ACTIVITY";
     public static final String WINDOW_TITLE = "WINDOW_TITLE";
@@ -78,7 +79,6 @@ public class MaoniActivity extends AppCompatActivity {
     public static final String EXTRA_LAYOUT = "EXTRA_LAYOUT";
     public static final String SCREENSHOT_PATH = "feedback/screenshot.png";
     private static final String MAONI_LOGS_FILENAME = "feedback/logs.txt";
-    private static final String FILE_PROVIDER_AUTHORITY = "com.volkhart.feedback.fileprovider";
 
     @Nullable
     private TextInputLayout mContentInputLayout;
@@ -308,8 +308,9 @@ public class MaoniActivity extends AppCompatActivity {
 
             final Intent intent = getIntent();
 
-            Uri screenshotUri = null;
-            File screenshotFile = null;
+            String contentAuthority = intent.getStringExtra(FILE_PROVIDER_AUTHORITY);
+            Uri screenshotUri;
+            File screenshotFile;
             Uri logsUri = null;
             File logsFile = null;
 
@@ -320,11 +321,11 @@ public class MaoniActivity extends AppCompatActivity {
             }
 
             screenshotFile = new File(getFilesDir(), SCREENSHOT_PATH);
-            screenshotUri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, screenshotFile);
+            screenshotUri = FileProvider.getUriForFile(this, contentAuthority, screenshotFile);
             grantUriPermission(intent.getComponent().getPackageName(),
                     screenshotUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (logsFile != null) {
-                logsUri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, logsFile);
+                logsUri = FileProvider.getUriForFile(this, contentAuthority, logsFile);
                 grantUriPermission(intent.getComponent().getPackageName(),
                         logsUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }

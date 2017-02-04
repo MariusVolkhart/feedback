@@ -41,7 +41,7 @@ import org.rm3l.maoni.sample.feedback.MyHandlerForMaoni;
 public class MaoniSampleMainActivity extends AppCompatActivity {
 
     private static final String MY_FILE_PROVIDER_AUTHORITY =
-            (BuildConfig.APPLICATION_ID + ".fileprovider");
+            (BuildConfig.APPLICATION_ID + ".feedback");
 
     private Feedback feedback;
 
@@ -56,7 +56,7 @@ public class MaoniSampleMainActivity extends AppCompatActivity {
         }
 
         final MyHandlerForMaoni handlerForMaoni = new MyHandlerForMaoni(this);
-        final Feedback.Builder builder = new Feedback.Builder(handlerForMaoni)
+        final Feedback.Builder builder = new Feedback.Builder(MY_FILE_PROVIDER_AUTHORITY, handlerForMaoni)
                 .withWindowTitle("Feedback") //Set to an empty string to clear it
                 .withExtraLayout(R.layout.my_feedback_activity_extra_content)
                 .withFeedbackContentHint("[Custom hint] Write your feedback here")

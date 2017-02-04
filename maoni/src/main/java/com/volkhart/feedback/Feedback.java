@@ -51,6 +51,7 @@ import static com.volkhart.feedback.ui.MaoniActivity.CALLER_ACTIVITY;
 import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_ERROR_TEXT;
 import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_HINT;
 import static com.volkhart.feedback.ui.MaoniActivity.EXTRA_LAYOUT;
+import static com.volkhart.feedback.ui.MaoniActivity.FILE_PROVIDER_AUTHORITY;
 import static com.volkhart.feedback.ui.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
 import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_HINT;
 import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
@@ -110,13 +111,11 @@ public class Feedback {
     @StyleRes
     @Nullable
     public final Integer theme;
+    private final String fileProviderAuthority;
     private final AtomicBoolean mUsed = new AtomicBoolean(false);
-    private File workingDir;
 
     /**
-     * @param workingDir                   the working directory.
-     *                                     Will default to the caller activity cache directory if none was specified.
-     *                                     This is where screenshots are typically stored.
+     * @param fileProviderAuthority        the file provider authority.
      * @param windowTitle                  the feedback window title
      * @param theme                        the theme to apply
      * @param feedbackContentHint          the feedback form field hint message
@@ -127,7 +126,7 @@ public class Feedback {
      * @param screenshotHint               the text to display to the user
      */
     public Feedback(
-            @Nullable final File workingDir,
+            String fileProviderAuthority,
             @Nullable final CharSequence windowTitle,
             @StyleRes @Nullable final Integer theme,
             @Nullable final CharSequence feedbackContentHint,
@@ -136,7 +135,7 @@ public class Feedback {
             @Nullable final CharSequence includeSystemInfoText,
             @Nullable final CharSequence touchToPreviewScreenshotText,
             @Nullable final CharSequence screenshotHint) {
-
+        this.fileProviderAuthority = fileProviderAuthority;
         this.theme = theme;
         this.windowTitle = windowTitle;
         this.contentErrorMessage = contentErrorMessage;
@@ -145,7 +144,6 @@ public class Feedback {
         this.includeSystemInfoText = includeSystemInfoText;
         this.touchToPreviewScreenshotText = touchToPreviewScreenshotText;
         this.extraLayout = extraLayout;
-        this.workingDir = workingDir;
     }
 
     /**
@@ -204,6 +202,8 @@ public class Feedback {
                     buildConfigBuildTypeValue.toString());
         }
 
+        maoniIntent.putExtra(FILE_PROVIDER_AUTHORITY, fileProviderAuthority);
+
         //Create screenshot file
         final File screenshotFile = new File(callerActivity.getFilesDir(), MaoniActivity.SCREENSHOT_PATH);
         ViewUtils.exportViewToFile(callerActivity.getWindow().getDecorView(), screenshotFile);
@@ -255,11 +255,10 @@ public class Feedback {
      * Maoni Builder
      */
     public static class Builder {
+        private final String fileProviderAuthority;
         @StyleRes
         @Nullable
         public Integer theme;
-        @Nullable
-        private File maoniWorkingDir;
         @Nullable
         private CharSequence windowTitle;
         @Nullable
@@ -279,16 +278,15 @@ public class Feedback {
         /**
          * @param listener Required to be able to process feedback
          */
-        public Builder(Listener listener) {
+        public Builder(String fileProviderAuthority, Listener listener) {
+            if (fileProviderAuthority == null) {
+                throw new NullPointerException("fileProviderAuthority may not be null");
+            }
+            this.fileProviderAuthority = fileProviderAuthority;
             if (listener == null) {
                 throw new NullPointerException("listener may not be null");
             }
             getInstance().setListener(listener);
-        }
-
-        public Builder withMaoniWorkingDir(@Nullable File maoniWorkingDir) {
-            this.maoniWorkingDir = maoniWorkingDir;
-            return this;
         }
 
         public Builder withTheme(@StyleRes @Nullable Integer theme) {
@@ -336,7 +334,7 @@ public class Feedback {
 
         public Feedback build() {
             return new Feedback(
-                    maoniWorkingDir,
+                    fileProviderAuthority,
                     windowTitle,
                     theme,
                     feedbackContentHint,

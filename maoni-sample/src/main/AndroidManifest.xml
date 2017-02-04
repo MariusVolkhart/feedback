@@ -34,13 +34,13 @@ SOFTWARE.
 
         <!-- If not defined yet, declare a file provider to be able to share screenshots captured by Maoni -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="org.rm3l.maoni.sample.fileprovider"
+            android:name="com.volkhart.feedback.FeedbackFileProvider"
+            android:authorities="${applicationId}.feedback"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
+                android:resource="@xml/feedback_filepaths" />
         </provider>
 
         <activity
