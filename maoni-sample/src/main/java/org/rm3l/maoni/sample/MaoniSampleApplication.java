@@ -26,7 +26,7 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
-import com.volkhart.feedback.utils.FeedbackTree;
+import com.volkhart.feedback.FeedbackTree;
 
 import timber.log.Timber;
 

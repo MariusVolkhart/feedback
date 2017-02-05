@@ -19,39 +19,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.volkhart.feedback.utils;
+package com.volkhart.feedback.internal;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import android.support.annotation.Nullable;
 
 /**
- * Utilities for manipulating the App logs
+ * Utilities for manipulating {@code Context}.
  */
-public final class LogUtils {
+public final class ContextUtils {
 
-    private static final String TAG = LogUtils.class.getCanonicalName();
-
-    private LogUtils() {
-        throw new UnsupportedOperationException("Not instantiable");
+    private ContextUtils() {
+        throw new AssertionError("No instances");
     }
 
-    public static void writeLogsToFile(@NonNull final File outputFile) {
-        PrintWriter out = null;
+    /**
+     * Gets a field from the project's BuildConfig. This is useful when, for example, flavors
+     * are used at the project level to set custom fields.
+     * <p/>
+     * Workaround inspired from http://goo.gl/gKQqkC
+     *
+     * @param context   Used to find the correct file
+     * @param fieldName The name of the field to access
+     * @return The value of the field, or {@literal null} if the field is not found.
+     */
+    @Nullable
+    public static Object getBuildConfigValue(@NonNull final Context context,
+                                             @NonNull final String fieldName) {
         try {
-            out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, false)));
-            FeedbackTree.INSTANCE.writeToStream(out);
-        } catch (final IOException ioe) {
-            Log.e(TAG, "Unable to write logs to file", ioe);
-        } finally {
-            if (out != null) {
-                out.close();
-            }
+            return Class
+                    .forName(String.format("%s.BuildConfig", context.getPackageName()))
+                    .getField(fieldName)
+                    .get(null);
+        } catch (final Exception e) {
+            //No worries
+            e.printStackTrace();
+            return null;
         }
     }
 }

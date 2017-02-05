@@ -23,8 +23,8 @@ SOFTWARE.
     package="com.volkhart.feedback">
 
     <application>
-        <activity android:name="com.volkhart.feedback.ui.MaoniActivity" />
-        <activity android:name="com.volkhart.feedback.ui.ScreenshotEditorActivity" />
+        <activity android:name="com.volkhart.feedback.internal.MaoniActivity" />
+        <activity android:name="com.volkhart.feedback.internal.ScreenshotEditorActivity" />
     </application>
 
 </manifest>

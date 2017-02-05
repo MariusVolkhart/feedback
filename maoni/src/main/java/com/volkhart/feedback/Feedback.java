@@ -29,11 +29,10 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.util.Log;
 
-import com.volkhart.feedback.ui.MaoniActivity;
-import com.volkhart.feedback.utils.ContextUtils;
-import com.volkhart.feedback.utils.ViewUtils;
+import com.volkhart.feedback.internal.ContextUtils;
+import com.volkhart.feedback.internal.MaoniActivity;
+import com.volkhart.feedback.internal.ViewUtils;
 
 import org.rm3l.maoni.common.contract.Listener;
 
@@ -41,30 +40,27 @@ import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.volkhart.feedback.Feedback.CallbacksConfiguration.getInstance;
-import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE;
-import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_DEBUG;
-import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_FLAVOR;
-import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_PACKAGE_NAME;
-import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_VERSION_CODE;
-import static com.volkhart.feedback.ui.MaoniActivity.APPLICATION_INFO_VERSION_NAME;
-import static com.volkhart.feedback.ui.MaoniActivity.CALLER_ACTIVITY;
-import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_ERROR_TEXT;
-import static com.volkhart.feedback.ui.MaoniActivity.CONTENT_HINT;
-import static com.volkhart.feedback.ui.MaoniActivity.EXTRA_LAYOUT;
-import static com.volkhart.feedback.ui.MaoniActivity.FILE_PROVIDER_AUTHORITY;
-import static com.volkhart.feedback.ui.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
-import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_HINT;
-import static com.volkhart.feedback.ui.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
-import static com.volkhart.feedback.ui.MaoniActivity.THEME;
-import static com.volkhart.feedback.ui.MaoniActivity.WINDOW_TITLE;
+import static com.volkhart.feedback.internal.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE;
+import static com.volkhart.feedback.internal.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_DEBUG;
+import static com.volkhart.feedback.internal.MaoniActivity.APPLICATION_INFO_BUILD_CONFIG_FLAVOR;
+import static com.volkhart.feedback.internal.MaoniActivity.APPLICATION_INFO_PACKAGE_NAME;
+import static com.volkhart.feedback.internal.MaoniActivity.APPLICATION_INFO_VERSION_CODE;
+import static com.volkhart.feedback.internal.MaoniActivity.APPLICATION_INFO_VERSION_NAME;
+import static com.volkhart.feedback.internal.MaoniActivity.CALLER_ACTIVITY;
+import static com.volkhart.feedback.internal.MaoniActivity.CONTENT_ERROR_TEXT;
+import static com.volkhart.feedback.internal.MaoniActivity.CONTENT_HINT;
+import static com.volkhart.feedback.internal.MaoniActivity.EXTRA_LAYOUT;
+import static com.volkhart.feedback.internal.MaoniActivity.FILE_PROVIDER_AUTHORITY;
+import static com.volkhart.feedback.internal.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
+import static com.volkhart.feedback.internal.MaoniActivity.SCREENSHOT_HINT;
+import static com.volkhart.feedback.internal.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
+import static com.volkhart.feedback.internal.MaoniActivity.THEME;
+import static com.volkhart.feedback.internal.MaoniActivity.WINDOW_TITLE;
 
 /**
  * Feedback configuration
  */
 public class Feedback {
-
-    private static final String LOG_TAG = Feedback.class.getSimpleName();
-
     private static final String DEBUG = "DEBUG";
     private static final String FLAVOR = "FLAVOR";
     private static final String BUILD_TYPE = "BUILD_TYPE";
@@ -151,18 +147,16 @@ public class Feedback {
      *
      * @param callerActivity the caller activity
      */
-    public void start(@Nullable final Activity callerActivity) {
+    public void start(final Activity callerActivity) {
+        if (callerActivity == null) {
+            throw new NullPointerException("Caller activity may not be null");
+        }
 
         if (mUsed.getAndSet(true)) {
             unregisterListener();
             throw new UnsupportedOperationException(
                     "Maoni instance cannot be reused to start a new activity. " +
                             "Please build a new Maoni instance.");
-        }
-
-        if (callerActivity == null) {
-            Log.d(LOG_TAG, "Target activity is undefined");
-            return;
         }
 
         final Intent maoniIntent = new Intent(callerActivity, MaoniActivity.class);

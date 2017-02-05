@@ -1,4 +1,4 @@
-package com.volkhart.feedback.utils;
+package com.volkhart.feedback;
 
 import android.util.Log;
 
@@ -18,7 +18,7 @@ public final class FeedbackTree extends Timber.DebugTree {
     private FeedbackTree() {
     }
 
-    void writeToStream(PrintWriter writer) {
+    public void writeToStream(PrintWriter writer) {
         synchronized (logMessages) {
             for (String message : logMessages) {
                 writer.println(message);

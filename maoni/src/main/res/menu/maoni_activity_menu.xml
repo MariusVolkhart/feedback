@@ -22,7 +22,7 @@ SOFTWARE.
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.volkhart.feedback.ui.MaoniActivity">
+    tools:context="com.volkhart.feedback.internal.MaoniActivity">
 
     <item
         android:id="@+id/maoni_feedback_send"

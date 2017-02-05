@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.volkhart.feedback.ui;
+package com.volkhart.feedback.internal;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -43,8 +43,6 @@ import android.widget.TextView;
 
 import com.volkhart.feedback.Feedback.CallbacksConfiguration;
 import com.volkhart.feedback.R;
-import com.volkhart.feedback.utils.LogUtils;
-import com.volkhart.feedback.utils.ViewUtils;
 
 import org.rm3l.maoni.common.contract.Listener;
 import org.rm3l.maoni.common.model.Feedback;

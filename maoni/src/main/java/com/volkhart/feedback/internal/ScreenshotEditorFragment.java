@@ -1,4 +1,4 @@
-package com.volkhart.feedback.ui;
+package com.volkhart.feedback.internal;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.volkhart.feedback.R;
-import com.volkhart.feedback.utils.ViewUtils;
 
 import java.io.File;
 

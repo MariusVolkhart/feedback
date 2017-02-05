@@ -19,9 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.volkhart.feedback.utils;
+package com.volkhart.feedback.internal;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -54,7 +53,7 @@ public final class ViewUtils {
      * @return the bitmap or {@code null} if the {@code view} is null
      */
     @Nullable
-    public static Bitmap toBitmap(@Nullable final View view) {
+    private static Bitmap toBitmap(@Nullable final View view) {
         if (view == null) {
             return null;
         }
@@ -89,8 +88,8 @@ public final class ViewUtils {
      * @param bitmap  the bitmap to export
      * @param file    the file in which to save the view
      */
-    public static void exportBitmapToFile(@NonNull final Bitmap bitmap,
-                                          @NonNull final File file) {
+    private static void exportBitmapToFile(@NonNull final Bitmap bitmap,
+                                           @NonNull final File file) {
         OutputStream outputStream = null;
         try {
             // if making the directories fails we'll already handle it by not sending a screenshot
@@ -136,31 +135,6 @@ public final class ViewUtils {
     }
 
     /**
-     * Decode a given drawable resource with the specified dimensions
-     *
-     * @param res       the app resources
-     * @param resId     the drawable resource ID
-     * @param reqWidth  the required width
-     * @param reqHeight the required height
-     * @return the bitmap
-     */
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    /**
      * Decode a given image file with the specified dimensions
      *
      * @param filePath  the file resource path
@@ -168,8 +142,8 @@ public final class ViewUtils {
      * @param reqHeight the required height
      * @return the bitmap
      */
-    public static Bitmap decodeSampledBitmapFromFilePath(String filePath,
-                                                         int reqWidth, int reqHeight) {
+    static Bitmap decodeSampledBitmapFromFilePath(String filePath,
+                                                  int reqWidth, int reqHeight) {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();

@@ -1,4 +1,4 @@
-package com.volkhart.feedback.ui;
+package com.volkhart.feedback.internal;
 
 import android.content.Context;
 import android.content.Intent;
