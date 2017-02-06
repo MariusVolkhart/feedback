@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.0.0 *(2017-02-05)*
+## Version 1.0.0-rc1 *(2017-02-05)*
 All changes compared to Maoni 2.3.1
 
 - Remove dependency on, usage of, and permissions for Logcat. Instead, use Timber to collect logs.
