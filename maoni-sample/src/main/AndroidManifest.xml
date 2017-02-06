@@ -21,12 +21,12 @@ SOFTWARE.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.rm3l.maoni.sample">
+    package="com.volkhart.feedback.sample">
 
     <application
-        android:name=".MaoniSampleApplication"
+        android:name="com.volkhart.feedback.sample.App"
         android:allowBackup="true"
-        android:icon="@mipmap/maoni_ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/maoni_app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -44,18 +44,12 @@ SOFTWARE.
         </provider>
 
         <activity
-            android:name=".ui.MaoniSampleMainActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:label="@string/maoni_app_name"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize">
+            android:name="com.volkhart.feedback.sample.MainActivity"
+            android:label="@string/maoni_app_name">
             <intent-filter>
-                <action android:name="android.intent.action.APP_ERROR" />
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
 

@@ -41,11 +41,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.volkhart.feedback.Feedback.CallbacksConfiguration;
 import com.volkhart.feedback.R;
-
-import org.rm3l.maoni.common.contract.Listener;
-import org.rm3l.maoni.common.model.Feedback;
 
 import java.io.File;
 import java.util.UUID;
@@ -55,18 +51,8 @@ import java.util.UUID;
  */
 public class MaoniActivity extends AppCompatActivity {
 
-    public static final String APPLICATION_INFO_VERSION_CODE = "APPLICATION_INFO_VERSION_CODE";
-    public static final String APPLICATION_INFO_VERSION_NAME = "APPLICATION_INFO_VERSION_NAME";
-    public static final String APPLICATION_INFO_PACKAGE_NAME = "APPLICATION_INFO_PACKAGE_NAME";
-    public static final String APPLICATION_INFO_BUILD_CONFIG_DEBUG =
-            "APPLICATION_INFO_BUILD_CONFIG_DEBUG";
-    public static final String APPLICATION_INFO_BUILD_CONFIG_FLAVOR =
-            "APPLICATION_INFO_BUILD_CONFIG_FLAVOR";
-    public static final String APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE =
-            "APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE";
     public static final String FILE_PROVIDER_AUTHORITY = "FILE_PROVIDER_AUTHORITY";
     public static final String THEME = "THEME";
-    public static final String CALLER_ACTIVITY = "CALLER_ACTIVITY";
     public static final String WINDOW_TITLE = "WINDOW_TITLE";
     public static final String SCREENSHOT_HINT = "SCREENSHOT_HINT";
     public static final String CONTENT_HINT = "CONTENT_HINT";
@@ -90,9 +76,6 @@ public class MaoniActivity extends AppCompatActivity {
     private CharSequence mContentErrorText;
 
     private String mFeedbackUniqueId;
-    private Feedback.App mAppInfo;
-
-    private Listener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +100,6 @@ public class MaoniActivity extends AppCompatActivity {
                 }
             }
         }
-
-        final CallbacksConfiguration maoniConfiguration = CallbacksConfiguration.getInstance();
-
-        mListener = maoniConfiguration.getListener();
 
         if (intent.hasExtra(WINDOW_TITLE)) {
             setTitle(intent.getCharSequenceExtra(WINDOW_TITLE));
@@ -171,8 +150,6 @@ public class MaoniActivity extends AppCompatActivity {
         initScreenCaptureView(intent);
 
         mFeedbackUniqueId = UUID.randomUUID().toString();
-
-        setAppRelatedInfo();
     }
 
     @Override
@@ -230,33 +207,12 @@ public class MaoniActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        CallbacksConfiguration.getInstance().reset();
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.maoni_activity_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void setAppRelatedInfo() {
-
-        final Intent intent = getIntent();
-        final CharSequence callerActivity = intent.getCharSequenceExtra(CALLER_ACTIVITY);
-        mAppInfo = new Feedback.App(
-                callerActivity != null ? callerActivity : getClass().getSimpleName(),
-                intent.hasExtra(APPLICATION_INFO_BUILD_CONFIG_DEBUG) ?
-                        intent.getBooleanExtra(APPLICATION_INFO_BUILD_CONFIG_DEBUG, false) : null,
-                intent.getStringExtra(APPLICATION_INFO_PACKAGE_NAME),
-                intent.getIntExtra(APPLICATION_INFO_VERSION_CODE, -1),
-                intent.getStringExtra(APPLICATION_INFO_BUILD_CONFIG_FLAVOR),
-                intent.getStringExtra(APPLICATION_INFO_BUILD_CONFIG_BUILD_TYPE),
-                intent.hasExtra(APPLICATION_INFO_VERSION_NAME) ?
-                        intent.getStringExtra(APPLICATION_INFO_VERSION_NAME) : null);
-    }
-
+    // TODO Enable custom views to participate in validation
     private boolean validateForm() {
         if (mContent != null) {
             if (TextUtils.isEmpty(mContent.getText())) {
@@ -285,18 +241,9 @@ public class MaoniActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mListener != null) {
-            mListener.onDismiss();
-        }
-        super.onBackPressed();
-    }
-
     private void validateAndSubmitForm() {
         //Validate form
         if (this.validateForm()) {
-            //TODO Check that device is actually connected to the internet prior to going any further
             String contentText = "";
             if (mContent != null) {
                 contentText = mContent.getText().toString();
@@ -326,26 +273,14 @@ public class MaoniActivity extends AppCompatActivity {
                         logsUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
 
-            //Construct the feedback object and call the actual implementation
-            final Feedback feedback =
-                    new Feedback(mFeedbackUniqueId,
-                            this,
-                            mAppInfo,
-                            contentText,
-                            includeSystemInfo,
-                            screenshotUri,
-                            screenshotFile,
-                            includeSystemInfo,
-                            logsUri,
-                            logsFile);
-            if (mListener != null) {
-                if (mListener.onSendButtonClicked(feedback)) {
-                    finish();
-                } // else do *not* finish the activity
-            } else {
-                finish();
-            }
+            setResult(RESULT_OK, FeedbackIntent.of(
+                    mFeedbackUniqueId,
+                    contentText,
+                    includeSystemInfo,
+                    screenshotUri,
+                    logsUri
+            ));
+            finish();
         } //else do nothing - this is up to the callback implementation
     }
-
 }

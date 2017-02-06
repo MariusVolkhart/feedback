@@ -28,7 +28,7 @@ import android.support.annotation.Nullable;
 /**
  * Utilities for manipulating {@code Context}.
  */
-public final class ContextUtils {
+final class ContextUtils {
 
     private ContextUtils() {
         throw new AssertionError("No instances");
@@ -45,8 +45,8 @@ public final class ContextUtils {
      * @return The value of the field, or {@literal null} if the field is not found.
      */
     @Nullable
-    public static Object getBuildConfigValue(@NonNull final Context context,
-                                             @NonNull final String fieldName) {
+    static Object getBuildConfigValue(@NonNull final Context context,
+                                      @NonNull final String fieldName) {
         try {
             return Class
                     .forName(String.format("%s.BuildConfig", context.getPackageName()))
