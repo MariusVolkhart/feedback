@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    compile project(":maoni")
+    compile project(":feedback")
     compile ('org.rm3l:maoni-email:2.3.1') {
         //Exclude transitive dependency to 'maoni-common', as we are already using the version we have in this project
         exclude group: 'org.rm3l', module: 'maoni-common'

@@ -1,4 +1,4 @@
-include ':maoni-sample'
-include ':maoni'
+include ':sample'
+include ':feedback'
 
 rootProject.name = 'feedback-parent'
