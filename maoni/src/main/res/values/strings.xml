@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="maoni_screenshot">Screenshot</string>
-    <string name="maoni_feedback_content_hint">Write your feedback</string>
-    <string name="maoni_feedback_include_system_info_title">Include screenshot and logs</string>
-    <string name="maoni_touch_to_preview">Highlight and hide content</string>
-    <string name="maoni_screenshot_informational_text">Your system info will be sent.</string>
-    <string name="maoni_send_feedback">Send</string>
-    <string name="maoni_validate_must_not_be_blank">Must not be blank</string>
-    <string name="maoni_screenshot_preview">Preview</string>
-    <string name="maoni_highlight">Highlight</string>
-    <string name="maoni_blackout">Blackout</string>
-    <string name="maoni_undo">Undo</string>
-    <string name="maoni_save">Save</string>
+    <string name="feedback_screenshot">Screenshot</string>
+    <string name="feedback_content_hint">Write your feedback</string>
+    <string name="feedback_include_system_info_title">Include screenshot and logs</string>
+    <string name="feedback_touch_to_preview">Highlight and hide content</string>
+    <string name="feedback_screenshot_informational_text">Your system info will be sent.</string>
+    <string name="feedback_send_feedback">Send</string>
+    <string name="feedback_validate_must_not_be_blank">Must not be blank</string>
+    <string name="feedback_screenshot_preview">Preview</string>
+    <string name="feedback_highlight">Highlight</string>
+    <string name="feedback_blackout">Blackout</string>
+    <string name="feedback_undo">Undo</string>
+    <string name="feedback_save">Save</string>
     <string name="feedback_action_feedback">Feedback</string>
 </resources>

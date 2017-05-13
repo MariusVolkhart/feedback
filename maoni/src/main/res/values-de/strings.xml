@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="maoni_screenshot">Screenshot</string>
-  <string name="maoni_feedback_content_hint">Hier Feedback hinterlassen</string>
-  <string name="maoni_feedback_include_system_info_title">Screenshot und Protokolle hinzufügen</string>
-  <string name="maoni_touch_to_preview">Inhalt markieren und verbergen</string>
-  <string name="maoni_send_feedback">Senden</string>
-  <string name="maoni_validate_must_not_be_blank">Darf nicht leer sein</string>
-  <string name="maoni_highlight">Markieren</string>
-  <string name="maoni_blackout">Schwärzen</string>
-  <string name="maoni_undo">Zurück</string>
-  <string name="maoni_save">Speichern</string>
-  <string name="maoni_screenshot_informational_text">Ihre Systeminformationen werden gesendet.</string>
-  <string name="maoni_screenshot_preview">Vorschau</string>
+    <string name="feedback_screenshot">Screenshot</string>
+    <string name="feedback_content_hint">Hier Feedback hinterlassen</string>
+    <string name="feedback_include_system_info_title">Screenshot und Protokolle hinzufügen</string>
+    <string name="feedback_touch_to_preview">Inhalt markieren und verbergen</string>
+    <string name="feedback_send_feedback">Senden</string>
+    <string name="feedback_validate_must_not_be_blank">Darf nicht leer sein</string>
+    <string name="feedback_highlight">Markieren</string>
+    <string name="feedback_blackout">Schwärzen</string>
+    <string name="feedback_undo">Zurück</string>
+    <string name="feedback_save">Speichern</string>
+    <string name="feedback_screenshot_informational_text">Ihre Systeminformationen werden gesendet.</string>
+    <string name="feedback_screenshot_preview">Vorschau</string>
   <string name="feedback_action_feedback">Feedback</string>
 </resources>

@@ -5,11 +5,11 @@
     tools:context="com.volkhart.feedback.internal.ScreenshotEditorActivity">
 
     <item
-        android:id="@+id/action_save"
+        android:id="@+id/feedback_action_save"
         android:alphabeticShortcut="s"
-        android:icon="@drawable/ic_done_black_24dp"
+        android:icon="@drawable/feedback_ic_done_black_24dp"
         android:orderInCategory="1"
-        android:title="@string/maoni_save"
+        android:title="@string/feedback_save"
         app:showAsAction="always" />
 
 </menu>

@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_feedback"
+        android:id="@+id/feedback_action_feedback"
         android:alphabeticShortcut="b"
-        android:icon="@drawable/ic_feedback_black_24dp"
+        android:icon="@drawable/feedback_ic_feedback_black_24dp"
         android:orderInCategory="1000"
         android:title="@string/feedback_action_feedback"
         app:showAsAction="never" />

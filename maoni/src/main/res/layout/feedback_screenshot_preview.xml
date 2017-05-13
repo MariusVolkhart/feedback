@@ -1,29 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-Copyright (c) 2016 Armel Soro
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
--->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/windowBackgroundDark"
+    android:background="@color/feedback_windowBackgroundDark"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -43,54 +23,54 @@ SOFTWARE.
                 android:id="@+id/color_chooser"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:checkedButton="@+id/maoni_screenshot_preview_pick_highlight_color"
+                android:checkedButton="@+id/feedback_screenshot_preview_pick_highlight_color"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/maoni_screenshot_preview_pick_highlight_color"
+                    android:id="@+id/feedback_screenshot_preview_pick_highlight_color"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
-                    android:background="@drawable/highlight_selector"
+                    android:background="@drawable/feedback_highlight_selector"
                     android:button="@null"
-                    android:contentDescription="@string/maoni_highlight" />
+                    android:contentDescription="@string/feedback_highlight" />
 
                 <RadioButton
-                    android:id="@+id/maoni_screenshot_preview_pick_blackout_color"
+                    android:id="@+id/feedback_screenshot_preview_pick_blackout_color"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
-                    android:background="@drawable/blackout_selector"
+                    android:background="@drawable/feedback_blackout_selector"
                     android:button="@null"
-                    android:contentDescription="@string/maoni_blackout" />
+                    android:contentDescription="@string/feedback_blackout" />
             </RadioGroup>
 
             <ImageButton
-                android:id="@+id/maoni_screenshot_preview_undo"
+                android:id="@+id/feedback_screenshot_preview_undo"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:background="?actionBarItemBackground"
-                android:contentDescription="@string/maoni_undo"
-                app:srcCompat="@drawable/ic_undo_black_24dp" />
+                android:contentDescription="@string/feedback_undo"
+                app:srcCompat="@drawable/feedback_ic_undo_black_24dp" />
 
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/maoni_screenshot_preview_image_view_updated"
+        android:id="@+id/feedback_screenshot_preview_image_view_updated"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/maoni_screenshot_preview_image"
+            android:id="@+id/feedback_screenshot_preview_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/maoni_screenshot_preview"
+            android:contentDescription="@string/feedback_screenshot_preview"
             android:paddingBottom="8dp"
             android:paddingTop="8dp" />
 
         <me.panavtec.drawableview.DrawableView
-            android:id="@+id/maoni_screenshot_preview_image_drawable_view"
+            android:id="@+id/feedback_screenshot_preview_image_drawable_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

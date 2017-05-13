@@ -1,24 +1,3 @@
-/*
- * Copyright (c) 2016 Armel Soro
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package com.volkhart.feedback.internal;
 
 import android.content.Intent;
@@ -46,10 +25,7 @@ import com.volkhart.feedback.R;
 import java.io.File;
 import java.util.UUID;
 
-/**
- * Maoni Activity
- */
-public class MaoniActivity extends AppCompatActivity {
+public class FeedbackActivity extends AppCompatActivity {
 
     public static final String FILE_PROVIDER_AUTHORITY = "FILE_PROVIDER_AUTHORITY";
     public static final String THEME = "THEME";
@@ -86,10 +62,10 @@ public class MaoniActivity extends AppCompatActivity {
 
         setTheme(intent.getIntExtra(THEME, R.style.Feedback_Theme));
 
-        setContentView(R.layout.maoni_form_content);
+        setContentView(R.layout.feedback_form_content);
 
         if (intent.hasExtra(EXTRA_LAYOUT)) {
-            final View extraContentView = findViewById(R.id.maoni_content_extra);
+            final View extraContentView = findViewById(R.id.feedback_content_extra);
             if (extraContentView instanceof LinearLayout) {
                 final int extraLayout = intent.getIntExtra(EXTRA_LAYOUT, -1);
                 if (extraLayout != -1) {
@@ -110,13 +86,13 @@ public class MaoniActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            actionBar.setHomeAsUpIndicator(R.drawable.feedback_ic_arrow_back_black_24dp);
         }
 
         if (intent.hasExtra(SCREENSHOT_HINT)) {
             final CharSequence screenshotInformationalHint = intent.getCharSequenceExtra(SCREENSHOT_HINT);
             final TextView screenshotInformationalHintTv =
-                    (TextView) findViewById(R.id.maoni_screenshot_informational_text);
+                    (TextView) findViewById(R.id.feedback_screenshot_informational_text);
             if (screenshotInformationalHintTv != null) {
                 if (screenshotInformationalHint == null) {
                     screenshotInformationalHintTv.setVisibility(View.GONE);
@@ -126,8 +102,8 @@ public class MaoniActivity extends AppCompatActivity {
             }
         }
 
-        mContentInputLayout = (TextInputLayout) findViewById(R.id.maoni_content_input_layout);
-        mContent = (EditText) findViewById(R.id.maoni_content);
+        mContentInputLayout = (TextInputLayout) findViewById(R.id.feedback_content_input_layout);
+        mContent = (EditText) findViewById(R.id.feedback_content);
 
         if (intent.hasExtra(CONTENT_HINT)) {
             final CharSequence contentHint = intent.getCharSequenceExtra(CONTENT_HINT);
@@ -139,10 +115,10 @@ public class MaoniActivity extends AppCompatActivity {
         if (intent.hasExtra(CONTENT_ERROR_TEXT)) {
             mContentErrorText = intent.getCharSequenceExtra(CONTENT_ERROR_TEXT);
         } else {
-            mContentErrorText = getString(R.string.maoni_validate_must_not_be_blank);
+            mContentErrorText = getString(R.string.feedback_validate_must_not_be_blank);
         }
 
-        mIncludeSystemInfo = (CheckBox) findViewById(R.id.maoni_include_logs);
+        mIncludeSystemInfo = (CheckBox) findViewById(R.id.feedback_include_logs);
         if (mIncludeSystemInfo != null && intent.hasExtra(INCLUDE_SYSTEM_INFO_TEXT)) {
             mIncludeSystemInfo.setText(intent.getCharSequenceExtra(INCLUDE_SYSTEM_INFO_TEXT));
         }
@@ -160,16 +136,16 @@ public class MaoniActivity extends AppCompatActivity {
 
     private void initScreenCaptureView(@NonNull final Intent intent) {
         final ImageButton screenshotThumb = (ImageButton)
-                findViewById(R.id.maoni_screenshot);
+                findViewById(R.id.feedback_screenshot);
 
         final TextView touchToPreviewTextView =
-                (TextView) findViewById(R.id.maoni_screenshot_touch_to_preview);
+                (TextView) findViewById(R.id.feedback_screenshot_touch_to_preview);
         if (touchToPreviewTextView != null && intent.hasExtra(SCREENSHOT_TOUCH_TO_PREVIEW_HINT)) {
             touchToPreviewTextView.setText(
                     intent.getCharSequenceExtra(SCREENSHOT_TOUCH_TO_PREVIEW_HINT));
         }
 
-        final View screenshotContentView = findViewById(R.id.maoni_include_screenshot_content);
+        final View screenshotContentView = findViewById(R.id.feedback_include_screenshot_content);
         final File file = new File(getFilesDir(), SCREENSHOT_PATH);
         if (file.exists()) {
             if (mIncludeSystemInfo != null) {
@@ -192,7 +168,7 @@ public class MaoniActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Uri screenshotUri = Uri.fromFile(file);
                         int theme = intent.getIntExtra(THEME, R.style.Feedback_Theme);
-                        startActivity(ScreenshotEditorActivity.newIntent(MaoniActivity.this, screenshotUri, theme));
+                        startActivity(ScreenshotEditorActivity.newIntent(FeedbackActivity.this, screenshotUri, theme));
                     }
                 });
             }
@@ -208,7 +184,7 @@ public class MaoniActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.maoni_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.feedback_activity_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -235,7 +211,7 @@ public class MaoniActivity extends AppCompatActivity {
         final int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
             onBackPressed();
-        } else if (itemId == R.id.maoni_feedback_send) {
+        } else if (itemId == R.id.feedback_send) {
             validateAndSubmitForm();
         }
         return true;

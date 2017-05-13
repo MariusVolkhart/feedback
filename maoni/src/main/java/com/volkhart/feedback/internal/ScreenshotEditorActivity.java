@@ -14,14 +14,14 @@ public final class ScreenshotEditorActivity extends AppCompatActivity implements
     public static Intent newIntent(Context context, Uri screenshotUri, @StyleRes int theme) {
         Intent intent = new Intent(context, ScreenshotEditorActivity.class);
         intent.putExtra(ScreenshotEditorFragment.ARG_SCREENSHOT_URI, screenshotUri);
-        intent.putExtra(MaoniActivity.THEME, theme);
+        intent.putExtra(FeedbackActivity.THEME, theme);
         return intent;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(getIntent().getIntExtra(MaoniActivity.THEME, R.style.Feedback_Theme));
+        setTheme(getIntent().getIntExtra(FeedbackActivity.THEME, R.style.Feedback_Theme));
         if (savedInstanceState == null) {
             Uri screenshotUri = getIntent().getParcelableExtra(ScreenshotEditorFragment.ARG_SCREENSHOT_URI);
             getSupportFragmentManager().beginTransaction()

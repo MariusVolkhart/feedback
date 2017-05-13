@@ -1,24 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-Copyright (c) 2016 Armel Soro
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
--->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -43,14 +23,14 @@ SOFTWARE.
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/maoni_content_input_layout"
+            android:id="@+id/feedback_content_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
-            android:hint="@string/maoni_feedback_content_hint">
+            android:hint="@string/feedback_content_hint">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/maoni_content"
+                android:id="@+id/feedback_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences|textMultiLine"
@@ -58,7 +38,7 @@ SOFTWARE.
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
-            android:id="@+id/maoni_content_extra"
+            android:id="@+id/feedback_content_extra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
@@ -66,15 +46,15 @@ SOFTWARE.
             android:visibility="gone" />
 
         <CheckBox
-            android:id="@+id/maoni_include_logs"
+            android:id="@+id/feedback_include_logs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
             android:checked="true"
-            android:text="@string/maoni_feedback_include_system_info_title" />
+            android:text="@string/feedback_include_system_info_title" />
 
         <LinearLayout
-            android:id="@+id/maoni_include_screenshot_content"
+            android:id="@+id/feedback_include_screenshot_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/feedback_activity_vertical_margin"
@@ -92,28 +72,28 @@ SOFTWARE.
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/maoni_screenshot"
+                    android:id="@+id/feedback_screenshot"
                     android:layout_width="100dp"
                     android:layout_height="165dp"
-                    android:contentDescription="@string/maoni_screenshot"
+                    android:contentDescription="@string/feedback_screenshot"
                     android:scaleType="centerCrop" />
 
                 <TextView
-                    android:id="@+id/maoni_screenshot_touch_to_preview"
+                    android:id="@+id/feedback_screenshot_touch_to_preview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/maoni_touch_to_preview" />
+                    android:text="@string/feedback_touch_to_preview" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/maoni_screenshot_informational_text"
+                android:id="@+id/feedback_screenshot_informational_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="3"
-                android:text="@string/maoni_screenshot_informational_text"
+                android:text="@string/feedback_screenshot_informational_text"
                 android:textAppearance="?android:textAppearanceSmall" />
         </LinearLayout>
     </LinearLayout>

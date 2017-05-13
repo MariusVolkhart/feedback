@@ -2,13 +2,13 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true">
         <shape android:shape="oval">
-            <solid android:color="@color/highlight_solid" />
-            <stroke android:width="@dimen/color_selection_indicator_width" android:color="@color/color_selection_indicator" />
+            <solid android:color="@color/feedback_highlight_solid" />
+            <stroke android:width="@dimen/feedback_color_selection_indicator_width" android:color="@color/feedback_color_selection_indicator" />
         </shape>
     </item>
     <item android:state_checked="false">
         <shape android:shape="oval">
-            <solid android:color="@color/highlight_solid" />
+            <solid android:color="@color/feedback_highlight_solid" />
         </shape>
     </item>
 </selector>

@@ -9,8 +9,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.volkhart.feedback.internal.FeedbackActivity;
 import com.volkhart.feedback.internal.FeedbackIntent;
-import com.volkhart.feedback.internal.MaoniActivity;
 import com.volkhart.feedback.internal.ViewUtils;
 
 import org.rm3l.maoni.common.contract.Listener;
@@ -18,15 +18,15 @@ import org.rm3l.maoni.common.model.Feedback;
 
 import java.io.File;
 
-import static com.volkhart.feedback.internal.MaoniActivity.CONTENT_ERROR_TEXT;
-import static com.volkhart.feedback.internal.MaoniActivity.CONTENT_HINT;
-import static com.volkhart.feedback.internal.MaoniActivity.EXTRA_LAYOUT;
-import static com.volkhart.feedback.internal.MaoniActivity.FILE_PROVIDER_AUTHORITY;
-import static com.volkhart.feedback.internal.MaoniActivity.INCLUDE_SYSTEM_INFO_TEXT;
-import static com.volkhart.feedback.internal.MaoniActivity.SCREENSHOT_HINT;
-import static com.volkhart.feedback.internal.MaoniActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
-import static com.volkhart.feedback.internal.MaoniActivity.THEME;
-import static com.volkhart.feedback.internal.MaoniActivity.WINDOW_TITLE;
+import static com.volkhart.feedback.internal.FeedbackActivity.CONTENT_ERROR_TEXT;
+import static com.volkhart.feedback.internal.FeedbackActivity.CONTENT_HINT;
+import static com.volkhart.feedback.internal.FeedbackActivity.EXTRA_LAYOUT;
+import static com.volkhart.feedback.internal.FeedbackActivity.FILE_PROVIDER_AUTHORITY;
+import static com.volkhart.feedback.internal.FeedbackActivity.INCLUDE_SYSTEM_INFO_TEXT;
+import static com.volkhart.feedback.internal.FeedbackActivity.SCREENSHOT_HINT;
+import static com.volkhart.feedback.internal.FeedbackActivity.SCREENSHOT_TOUCH_TO_PREVIEW_HINT;
+import static com.volkhart.feedback.internal.FeedbackActivity.THEME;
+import static com.volkhart.feedback.internal.FeedbackActivity.WINDOW_TITLE;
 
 public abstract class FeedbackFragment extends Fragment implements Listener {
 
@@ -40,12 +40,12 @@ public abstract class FeedbackFragment extends Fragment implements Listener {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_feedback, menu);
+        inflater.inflate(R.menu.feedback_menu_feedback, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_feedback) {
+        if (item.getItemId() == R.id.feedback_action_feedback) {
             Configuration configuration = getConfiguration();
             Intent intent = buildIntent(configuration);
             startActivityForResult(intent, REQUEST_FEEDBACK);
@@ -76,12 +76,12 @@ public abstract class FeedbackFragment extends Fragment implements Listener {
 
     private Intent buildIntent(Configuration configuration) {
         Activity context = getActivity();
-        Intent intent = new Intent(context, MaoniActivity.class);
+        Intent intent = new Intent(context, FeedbackActivity.class);
 
         intent.putExtra(FILE_PROVIDER_AUTHORITY, configuration.fileProviderAuthority);
 
         //Create screenshot file
-        final File screenshotFile = new File(context.getFilesDir(), MaoniActivity.SCREENSHOT_PATH);
+        final File screenshotFile = new File(context.getFilesDir(), FeedbackActivity.SCREENSHOT_PATH);
         ViewUtils.exportViewToFile(context.getWindow().getDecorView(), screenshotFile);
 
         if (configuration.theme != null) {

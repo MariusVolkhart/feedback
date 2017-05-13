@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <public name="feedback_action_feedback" type="string" />
+    <public name="feedback_action_feedback" type="id" />
+    <public name="feedback_validate_must_not_be_blank" type="string" />
 </resources>
