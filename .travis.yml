@@ -5,9 +5,9 @@ jdk:
 
 android:
   components:
+    - tools # to get the new `repository-11.xml`
+    - tools # to install Android SDK tools 25.1.x (x = 6 right now)
     - platform-tools
-    - tools
-    - tools
     - build-tools-25.0.2
     - android-25
     - extra-android-m2repository
