@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.0-rc2 *(2017-05-14)*
+- Auto-register the `FeedbackTree`
+- Add a keyboard shortcut for initiating feedback
+- Hide private library resources
+- Provide an icon for the Feedback `MenuItem`
+
 ## Version 1.0.0-rc1 *(2017-02-05)*
 All changes compared to Maoni 2.3.1
 
