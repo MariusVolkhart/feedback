@@ -33,18 +33,18 @@ public abstract class FeedbackFragment extends Fragment implements Listener {
     private static final int REQUEST_FEEDBACK = 0;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public final void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public final void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_feedback, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public final boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_feedback) {
             Configuration configuration = getConfiguration();
             Intent intent = buildIntent(configuration);
@@ -56,7 +56,7 @@ public abstract class FeedbackFragment extends Fragment implements Listener {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public final void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_FEEDBACK) {
             if (resultCode == Activity.RESULT_OK) {
                 Feedback feedback = FeedbackIntent.parse(getActivity(), data);
