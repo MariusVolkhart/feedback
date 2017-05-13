@@ -5,6 +5,6 @@
         android:id="@+id/action_feedback"
         android:alphabeticShortcut="b"
         android:orderInCategory="1000"
-        android:title="@string/action_feedback"
+        android:title="@string/feedback_action_feedback"
         app:showAsAction="never" />
 </menu>
