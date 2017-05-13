@@ -1,6 +1,7 @@
 package com.volkhart.feedback.sample;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.volkhart.feedback.Configuration;
@@ -33,6 +34,7 @@ public final class ListenerFragment extends FeedbackFragment {
                 new String[]{"apps+maoni_sample@rm3l.org"});
     }
 
+    @NonNull
     @Override
     protected Configuration getConfiguration() {
         String authority = BuildConfig.APPLICATION_ID + ".feedback";

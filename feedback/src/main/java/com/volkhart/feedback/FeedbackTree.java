@@ -9,15 +9,38 @@ import java.util.List;
 
 import timber.log.Timber;
 
+/**
+ * This tree is used to collect logging statements.
+ * <p>
+ * When feedback is provided, the statements will be pulled form a cache inside this tree. This tree
+ * is automatically registered at app launch.
+ *
+ * @see #MESSAGES_TO_STORE
+ * @see #INSTANCE
+ */
 public final class FeedbackTree extends Timber.DebugTree {
 
+    /**
+     * The singleton instance. Useful if you want to uproot the forest or other shenanigans.
+     */
     public static final FeedbackTree INSTANCE = new FeedbackTree();
+    /**
+     * The number of messages to keep in the cache.
+     */
     public static int MESSAGES_TO_STORE = 100;
+
+    static {
+        Timber.plant(INSTANCE);
+    }
+
     private final List<String> logMessages = Collections.synchronizedList(new LinkedList<String>());
 
     private FeedbackTree() {
     }
 
+    /**
+     * Does not clear the cache
+     */
     public void writeToStream(PrintWriter writer) {
         synchronized (logMessages) {
             for (String message : logMessages) {
