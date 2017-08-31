@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     resourcePrefix 'feedback_'
 
     defaultConfig {
@@ -20,8 +20,8 @@ android {
 
 dependencies {
     compile 'org.rm3l:maoni-common:2.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:design:25.4.0'
     compile 'me.panavtec:drawableview:0.6.0'
     compile 'com.jakewharton.timber:timber:4.5.1'
 }
