@@ -1,0 +1,1 @@
+-dontwarn me.panavtec.drawableview.gestures.DrawerDelegate
