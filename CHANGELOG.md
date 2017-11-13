@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 1.0.0 *(2017-11-13)*
+- Target API 26
+
 ## Version 1.0.0-rc2 *(2017-05-14)*
 - Auto-register the `FeedbackTree`
 - Add a keyboard shortcut for initiating feedback
